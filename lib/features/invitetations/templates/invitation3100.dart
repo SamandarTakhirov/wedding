@@ -1,13 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 
+import '../../../core/extension/extension.dart';
 import '../../../core/utils/context_utils.dart';
 import '../../../core/utils/utils.dart';
-import '../../../gen/assets.gen.dart';
 import '../data/model/yellow_template.dart';
 import '../widgets/address_widget.dart';
 import '../widgets/center_widget.dart';
 import '../widgets/data_build_widget.dart';
+import '../widgets/image_carouel_widget.dart';
 import '../widgets/map_widget.dart';
 
 class Invitation3100 extends StatefulWidget {
@@ -64,7 +65,7 @@ class _Invitation3100State extends State<Invitation3100> {
                       AppUtils.kGap20,
                       DataBuildWidget(
                         dateTime: widget.yellowTemplate.weddingDate,
-                        eventTime: const TimeOfDay(hour: 19, minute: 0),
+                        eventTime: widget.yellowTemplate.weddingTime,
                       ),
                       AppUtils.kGap20,
                       Padding(
@@ -78,6 +79,11 @@ class _Invitation3100State extends State<Invitation3100> {
                           ),
                         ),
                       ),
+                      if (widget.yellowTemplate.images.isNotNull) ...[
+                        ImagesCarouselWidget(
+                          images: widget.yellowTemplate.images!,
+                        )
+                      ],
                       AppUtils.kGap20,
                       AddressWidget(
                         address: widget.yellowTemplate.addressName,

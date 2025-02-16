@@ -10,7 +10,7 @@ class YellowTemplate {
     required this.description,
     required this.addressName,
     required this.addressUrl,
-    required this.images,
+    this.images,
     this.circleCenterImage,
     this.bottomImage,
     this.topImage,
@@ -43,7 +43,7 @@ class YellowTemplate {
   final String description;
   final String addressName;
   final String addressUrl;
-  final List<String> images;
+  final List<String>? images;
   final Widget? circleCenterImage;
   final Widget? bottomImage;
   final Widget? topImage;

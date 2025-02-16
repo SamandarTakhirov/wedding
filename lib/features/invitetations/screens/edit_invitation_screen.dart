@@ -1,4 +1,9 @@
+import 'dart:convert';
+import 'dart:io';
+
+import 'package:file_picker/file_picker.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
@@ -6,6 +11,7 @@ import '../../../constants/app_colors.dart';
 import '../../../core/extension/date_formatter.dart';
 import '../../../core/extension/extension.dart';
 import '../../../core/utils/context_utils.dart';
+import '../../../core/utils/utils.dart';
 import '../../../gen/assets.gen.dart';
 import '../data/model/yellow_template.dart';
 import '../templates/invitation3100.dart';
@@ -60,7 +66,7 @@ class _EditInvitationScreenState extends State<EditInvitationScreen> {
     descriptionController = TextEditingController(text: templateNotifier.value.description);
     addressNameController = TextEditingController(text: templateNotifier.value.addressName);
     addressUrlController = TextEditingController(text: templateNotifier.value.addressUrl);
-    imagesController = TextEditingController(text: templateNotifier.value.images.join(', '));
+    imagesController = TextEditingController(text: templateNotifier.value.images?.join(', '));
 
     // Har bir controller uchun listener qo'shamiz
     mainTextController.addListener(() {
@@ -122,6 +128,28 @@ class _EditInvitationScreenState extends State<EditInvitationScreen> {
       addressUrl: addressUrl,
       images: images,
     );
+  }
+
+  Future<void> _pickImage() async {
+    var result = await FilePicker.platform.pickFiles(
+      type: FileType.image,
+      allowMultiple: true,
+      withData: kIsWeb, // Web uchun faylning bytes ni olamiz
+    );
+
+    if (result != null) {
+      var selectedImages = <String>[];
+
+      if (kIsWeb) {
+        // Web platforma uchun base64 formatga o‘tkazamiz
+        selectedImages = result.files.map((file) => base64Encode(file.bytes!)).toList();
+      } else {
+        // Mobile uchun fayl yo‘llarini olish
+        selectedImages = result.paths.whereType<String>().toList();
+      }
+
+      _updateTemplate(images: [...templateNotifier.value.images!, ...selectedImages]);
+    }
   }
 
   Future<void> _selectWeddingDate() async {
@@ -207,7 +235,6 @@ class _EditInvitationScreenState extends State<EditInvitationScreen> {
             final isCompact = constraints.maxWidth < 600;
             return Row(
               children: [
-                // Taklifnoma namoyishi qismi
                 Expanded(
                   child: Center(
                     child: Padding(
@@ -249,7 +276,6 @@ class _EditInvitationScreenState extends State<EditInvitationScreen> {
                     ),
                   ),
                 ),
-                // Tahrirlovchi panel
                 AnimatedSize(
                   duration: const Duration(milliseconds: 300),
                   curve: Curves.easeInOut,
@@ -354,6 +380,60 @@ class _EditInvitationScreenState extends State<EditInvitationScreen> {
                                 ),
                               ),
                             ],
+                          ),
+                          AppUtils.kGap8,
+                          Text(
+                            'Rasmlar',
+                            style: context.textTheme.bodyMedium?.copyWith(
+                              color: AppColors.grey,
+                            ),
+                          ),
+                          AppUtils.kGap8,
+                          ValueListenableBuilder<YellowTemplate>(
+                            valueListenable: templateNotifier,
+                            builder: (context, template, child) => Wrap(
+                              spacing: 10,
+                              runSpacing: 10,
+                              children: [
+                                ...template.images!.map((imagePath) => kIsWeb
+                                    ? ClipRRect(
+                                        borderRadius: const BorderRadius.all(Radius.circular(15)),
+                                        child: Image.memory(
+                                          base64Decode(imagePath),
+                                          width: 100,
+                                          height: 100,
+                                          fit: BoxFit.cover,
+                                        ),
+                                      )
+                                    : ClipRRect(
+                                        borderRadius: const BorderRadius.all(Radius.circular(15)),
+                                        child: Image.file(
+                                          File(imagePath),
+                                          width: 100,
+                                          height: 100,
+                                          fit: BoxFit.cover,
+                                        ),
+                                      )),
+                                SizedBox(
+                                  width: 100,
+                                  height: 100,
+                                  child: FilledButton(
+                                    style: FilledButton.styleFrom(
+                                      alignment: Alignment.center,
+                                      backgroundColor: AppColors.white,
+                                      shape: const RoundedRectangleBorder(
+                                        borderRadius: BorderRadius.all(Radius.circular(15)),
+                                        side: BorderSide(
+                                          color: AppColors.grey,
+                                        ),
+                                      ),
+                                    ),
+                                    onPressed: _pickImage,
+                                    child: const Icon(Icons.image, color: AppColors.black),
+                                  ),
+                                ),
+                              ],
+                            ),
                           ),
                           EditInvitationTextField(label: 'Manzil nomi', controller: addressNameController),
                           EditInvitationTextField(label: 'Address URL', controller: addressUrlController),
