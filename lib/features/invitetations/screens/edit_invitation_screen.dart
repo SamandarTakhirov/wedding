@@ -5,7 +5,6 @@ import 'package:file_picker/file_picker.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 
 import '../../../constants/app_colors.dart';
 import '../../../core/extension/date_formatter.dart';
@@ -59,7 +58,6 @@ class _EditInvitationScreenState extends State<EditInvitationScreen> {
       ),
     );
 
-    // Controllerlarni yaratish
     mainTextController = TextEditingController(text: templateNotifier.value.mainText);
     husbandNameController = TextEditingController(text: templateNotifier.value.husbandName);
     wifeNameController = TextEditingController(text: templateNotifier.value.wifeName);
@@ -68,10 +66,10 @@ class _EditInvitationScreenState extends State<EditInvitationScreen> {
     addressUrlController = TextEditingController(text: templateNotifier.value.addressUrl);
     imagesController = TextEditingController(text: templateNotifier.value.images?.join(', '));
 
-    // Har bir controller uchun listener qo'shamiz
     mainTextController.addListener(() {
       _updateTemplate(mainText: mainTextController.text);
     });
+
     husbandNameController.addListener(() {
       _updateTemplate(husbandName: husbandNameController.text);
     });
@@ -103,6 +101,7 @@ class _EditInvitationScreenState extends State<EditInvitationScreen> {
     addressUrlController.dispose();
     imagesController.dispose();
     templateNotifier.dispose();
+
     super.dispose();
   }
 

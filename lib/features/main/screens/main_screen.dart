@@ -29,7 +29,7 @@ class _MainScreenState extends State<MainScreen> with TickerProviderStateMixin {
               final isCompact = constraints.maxWidth < 600;
               return Stack(
                 children: [
-                  Expanded(child: widget.navigationShell),
+                  SizedBox.expand(child: widget.navigationShell),
                   AnimatedSize(
                     duration: const Duration(milliseconds: 300),
                     curve: Curves.easeInOut,
