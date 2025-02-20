@@ -12,7 +12,7 @@ import '../../../core/extension/extension.dart';
 import '../../../core/utils/context_utils.dart';
 import '../../../core/utils/utils.dart';
 import '../../../gen/assets.gen.dart';
-import '../data/model/yellow_template.dart';
+import '../data/model/template_model.dart';
 import '../templates/invitation3100.dart';
 import '../widgets/edit_invitation_text_field.dart';
 
@@ -32,14 +32,14 @@ class _EditInvitationScreenState extends State<EditInvitationScreen> {
   late TextEditingController addressUrlController;
   late TextEditingController imagesController;
 
-  late ValueNotifier<YellowTemplate> templateNotifier;
+  late ValueNotifier<TemplateModel> templateNotifier;
 
   @override
   void initState() {
     super.initState();
 
     templateNotifier = ValueNotifier(
-      YellowTemplate(
+      TemplateModel(
         mainText: 'The Wedding Day',
         husbandName: 'Temur',
         wifeName: 'Sarvinozxon',
@@ -133,17 +133,15 @@ class _EditInvitationScreenState extends State<EditInvitationScreen> {
     var result = await FilePicker.platform.pickFiles(
       type: FileType.image,
       allowMultiple: true,
-      withData: kIsWeb, // Web uchun faylning bytes ni olamiz
+      withData: kIsWeb,
     );
 
     if (result != null) {
       var selectedImages = <String>[];
 
       if (kIsWeb) {
-        // Web platforma uchun base64 formatga o‘tkazamiz
         selectedImages = result.files.map((file) => base64Encode(file.bytes!)).toList();
       } else {
-        // Mobile uchun fayl yo‘llarini olish
         selectedImages = result.paths.whereType<String>().toList();
       }
 
@@ -255,7 +253,7 @@ class _EditInvitationScreenState extends State<EditInvitationScreen> {
                           ),
                           child: Padding(
                             padding: const EdgeInsets.all(8),
-                            child: ValueListenableBuilder<YellowTemplate>(
+                            child: ValueListenableBuilder<TemplateModel>(
                               valueListenable: templateNotifier,
                               builder: (context, template, child) => SizedBox(
                                 width: context.height * .5,
@@ -265,7 +263,7 @@ class _EditInvitationScreenState extends State<EditInvitationScreen> {
                                   decoration: const BoxDecoration(
                                     borderRadius: BorderRadius.all(Radius.circular(30)),
                                   ),
-                                  child: Invitation3100(yellowTemplate: template),
+                                  child: Invitation3100(template: template),
                                 ),
                               ),
                             ),
@@ -330,7 +328,7 @@ class _EditInvitationScreenState extends State<EditInvitationScreen> {
                                     borderRadius: BorderRadius.all(Radius.circular(10)),
                                   ),
                                 ),
-                                child: ValueListenableBuilder<YellowTemplate>(
+                                child: ValueListenableBuilder<TemplateModel>(
                                   valueListenable: templateNotifier,
                                   builder: (context, template, child) => Text(
                                     template.weddingDate.toFormattedString(),
@@ -368,7 +366,7 @@ class _EditInvitationScreenState extends State<EditInvitationScreen> {
                                     borderRadius: BorderRadius.all(Radius.circular(10)),
                                   ),
                                 ),
-                                child: ValueListenableBuilder<YellowTemplate>(
+                                child: ValueListenableBuilder<TemplateModel>(
                                   valueListenable: templateNotifier,
                                   builder: (context, template, child) => Text(
                                     style: context.textTheme.bodyMedium?.copyWith(
@@ -388,7 +386,7 @@ class _EditInvitationScreenState extends State<EditInvitationScreen> {
                             ),
                           ),
                           AppUtils.kGap8,
-                          ValueListenableBuilder<YellowTemplate>(
+                          ValueListenableBuilder<TemplateModel>(
                             valueListenable: templateNotifier,
                             builder: (context, template, child) => Wrap(
                               spacing: 10,

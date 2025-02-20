@@ -6,13 +6,13 @@ import '../../../core/utils/context_utils.dart';
 
 class InfoItems extends StatelessWidget {
   const InfoItems({
-    required this.iconName,
+    required this.svg,
     required this.infoText,
     required this.totalPrice,
     super.key,
   });
 
-  final String iconName;
+  final SvgPicture svg;
   final String infoText;
   final String totalPrice;
 
@@ -30,12 +30,7 @@ class InfoItems extends StatelessWidget {
             ),
             child: Padding(
               padding: const EdgeInsets.all(24),
-              child: SvgPicture.asset(
-                iconName,
-                height: 42,
-                width: 42,
-                color: Colors.green,
-              ),
+              child: svg,
             ),
           ),
           Column(

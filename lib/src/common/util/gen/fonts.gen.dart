@@ -10,21 +10,9 @@
 class FontFamily {
   FontFamily._();
 
-  /// Font family: Ananda
-  static const String ananda = 'Ananda';
-
-  /// Font family: Dancing
-  static const String dancing = 'Dancing';
-
-  /// Font family: Geraldine
-  static const String geraldine = 'Geraldine';
-
   /// Font family: GreatVibes
   static const String greatVibes = 'GreatVibes';
 
   /// Font family: LucySaid
   static const String lucySaid = 'LucySaid';
-
-  /// Font family: Weather
-  static const String weather = 'Weather';
 }

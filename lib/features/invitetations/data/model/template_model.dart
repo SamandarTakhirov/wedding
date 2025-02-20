@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
-class YellowTemplate {
-  const YellowTemplate({
+class TemplateModel {
+  const TemplateModel({
     required this.mainText,
     required this.husbandName,
     required this.wifeName,
@@ -16,7 +16,7 @@ class YellowTemplate {
     this.topImage,
   });
 
-  factory YellowTemplate.fromJson(Map<String, Object?> json) => YellowTemplate(
+  factory TemplateModel.fromJson(Map<String, Object?> json) => TemplateModel(
         mainText: json['mainText'] as String,
         husbandName: json['husbandName'] as String,
         wifeName: json['wifeName'] as String,
@@ -48,7 +48,7 @@ class YellowTemplate {
   final Widget? bottomImage;
   final Widget? topImage;
 
-  YellowTemplate copyWith({
+  TemplateModel copyWith({
     String? mainText,
     String? husbandName,
     String? wifeName,
@@ -62,7 +62,7 @@ class YellowTemplate {
     Widget? bottomImage,
     Widget? topImage,
   }) =>
-      YellowTemplate(
+      TemplateModel(
         mainText: mainText ?? this.mainText,
         husbandName: husbandName ?? this.husbandName,
         wifeName: wifeName ?? this.wifeName,

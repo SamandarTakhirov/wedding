@@ -7,7 +7,7 @@ import '../../../core/extension/extension.dart';
 import '../../../core/utils/context_utils.dart';
 import '../../../gen/assets.gen.dart';
 import '../../../router/app_route.dart';
-import '../data/model/yellow_template.dart';
+import '../data/model/template_model.dart';
 import '../templates/invitation3100.dart';
 import 'custom_richtext.dart';
 
@@ -16,7 +16,7 @@ class TemplatesItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final yellowTemplate = YellowTemplate(
+    final yellowTemplate = TemplateModel(
         mainText: 'The Wedding Day',
         husbandName: 'Temur',
         wifeName: 'Sarvinozxon',
@@ -66,7 +66,7 @@ class TemplatesItem extends StatelessWidget {
                       ),
                     ),
                     child: Invitation3100(
-                      yellowTemplate: yellowTemplate,
+                      template: yellowTemplate,
                     ),
                   ),
                 ),

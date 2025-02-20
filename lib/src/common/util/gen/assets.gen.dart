@@ -15,26 +15,14 @@ import 'package:vector_graphics/vector_graphics.dart' as _vg;
 class $AssetsFontsGen {
   const $AssetsFontsGen();
 
-  /// File path: assets/fonts/Ananda.ttf
-  String get ananda => 'assets/fonts/Ananda.ttf';
-
-  /// File path: assets/fonts/Dancing.ttf
-  String get dancing => 'assets/fonts/Dancing.ttf';
-
-  /// File path: assets/fonts/Geraldine.ttf
-  String get geraldine => 'assets/fonts/Geraldine.ttf';
-
   /// File path: assets/fonts/GreatVibes.ttf
   String get greatVibes => 'assets/fonts/GreatVibes.ttf';
 
   /// File path: assets/fonts/LucySaid.ttf
   String get lucySaid => 'assets/fonts/LucySaid.ttf';
 
-  /// File path: assets/fonts/Weather.otf
-  String get weather => 'assets/fonts/Weather.otf';
-
   /// List of all assets
-  List<String> get values => [ananda, dancing, geraldine, greatVibes, lucySaid, weather];
+  List<String> get values => [greatVibes, lucySaid];
 }
 
 class $AssetsGifGen {

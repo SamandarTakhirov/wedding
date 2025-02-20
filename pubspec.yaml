@@ -26,12 +26,15 @@ dependencies:
   carousel_slider: ^5.0.0
   webview_flutter_web: ^0.2.3+4
   youtube_player_flutter: ^9.1.1
+  flutter_gen: ^5.9.0
   
 dev_dependencies:
   flutter_test:
     sdk: flutter
 
   flutter_lints: ^5.0.0
+  flutter_gen_runner: ^5.9.0
+  build_runner: ^2.4.15
 
 flutter:
   generate: true
@@ -66,6 +69,18 @@ flutter:
     - family: LucySaid
       fonts: 
         - asset: assets/fonts/LucySaid.ttf
+    - family: Ananda
+      fonts: 
+        - asset: assets/fonts/Ananda.ttf
+    - family: Geraldine
+      fonts: 
+        - asset: assets/fonts/Geraldine.ttf
+    - family: Weather
+      fonts: 
+        - asset: assets/fonts/Weather.otf
+    - family: Dancing
+      fonts: 
+        - asset: assets/fonts/Dancing.ttf
 
   #       - asset: fonts/Schyler-Italic.ttf
   #         style: italic
@@ -77,3 +92,11 @@ flutter:
   #
   # For details regarding fonts from package dependencies,
   # see https://flutter.dev/to/font-from-package
+
+
+flutter_gen:
+  output: lib/gen
+  line_length: 120
+
+  integrations:
+    flutter_svg: true
