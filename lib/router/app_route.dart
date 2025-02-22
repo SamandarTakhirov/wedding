@@ -4,6 +4,7 @@ import 'package:go_router/go_router.dart';
 
 import '../features/auth/screen/auth_screen.dart';
 import '../features/dashboard/screens/dashboard_screen.dart';
+import '../features/invitetations/data/model/template_info_model.dart';
 import '../features/invitetations/screens/edit_invitation_screen.dart';
 import '../features/invitetations/screens/invitetation_screen.dart';
 import '../features/main/bloc/main_bloc.dart';
@@ -80,7 +81,11 @@ final GoRouter router = GoRouter(
       path: Routes.editInvitetation,
       name: Routes.editInvitetation,
       parentNavigatorKey: rootNavigatorKey,
-      builder: (_, __) => const EditInvitationScreen(),
+      
+      builder: (_, state) => EditInvitationScreen(
+       editTemplate: state.extra as TemplateInfoModel,
+      ),
     ),
   ],
 );
+

@@ -6,10 +6,15 @@ import '../../../core/utils/context_utils.dart';
 class MapButton extends StatelessWidget {
   const MapButton({
     required this.addressUrl,
+    this.colors = const [
+      Color(0xFFD4A373),
+      Color(0xFF966737),
+    ],
     super.key,
   });
 
   final String addressUrl;
+  final List<Color> colors;
 
   Future<void> _openMap() async {
     final url = Uri.parse(addressUrl);
@@ -32,8 +37,8 @@ class MapButton extends StatelessWidget {
             borderRadius: BorderRadius.circular(30),
             child: Container(
               decoration: BoxDecoration(
-                gradient: const LinearGradient(
-                  colors: [Color(0xFFD4A373), Color(0xFF966737)],
+                gradient: LinearGradient(
+                  colors: colors,
                   begin: Alignment.topLeft,
                   end: Alignment.bottomRight,
                 ),
@@ -53,7 +58,7 @@ class MapButton extends StatelessWidget {
                 'Manzilni ko\'rish',
                 style: context.textTheme.titleLarge?.copyWith(
                   color: Colors.white,
-                  fontFamily: 'GreatVibes',
+                  fontFamily: 'Weather',
                 ),
               ),
             ),

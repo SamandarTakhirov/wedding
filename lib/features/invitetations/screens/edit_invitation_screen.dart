@@ -11,13 +11,17 @@ import '../../../core/extension/date_formatter.dart';
 import '../../../core/extension/extension.dart';
 import '../../../core/utils/context_utils.dart';
 import '../../../core/utils/utils.dart';
-import '../../../gen/assets.gen.dart';
-import '../data/model/yellow_template.dart';
-import '../templates/invitation3100.dart';
+import '../data/model/template_info_model.dart';
+import '../data/model/template_model.dart';
 import '../widgets/edit_invitation_text_field.dart';
 
 class EditInvitationScreen extends StatefulWidget {
-  const EditInvitationScreen({super.key});
+  const EditInvitationScreen({
+    required this.editTemplate,
+    super.key,
+  });
+
+  final TemplateInfoModel editTemplate;
 
   @override
   State<EditInvitationScreen> createState() => _EditInvitationScreenState();
@@ -32,31 +36,13 @@ class _EditInvitationScreenState extends State<EditInvitationScreen> {
   late TextEditingController addressUrlController;
   late TextEditingController imagesController;
 
-  late ValueNotifier<YellowTemplate> templateNotifier;
+  late ValueNotifier<TemplateModel> templateNotifier;
 
   @override
   void initState() {
     super.initState();
 
-    templateNotifier = ValueNotifier(
-      YellowTemplate(
-        mainText: 'The Wedding Day',
-        husbandName: 'Temur',
-        wifeName: 'Sarvinozxon',
-        weddingDate: DateTime(2025, 3, 7),
-        weddingTime: const TimeOfDay(hour: 19, minute: 0),
-        description:
-            'Aziz mehmonimiz, Sizni 19:00 da boshlanadigan Visol oqshomimizga taklif etamiz. Siz bilan ushbu baxtli onlarni baham ko‘rish biz uchun sharaf!',
-        addressName: 'Toshkent shahar, Yakkasaroy to\'yxonasi',
-        addressUrl: 'https://yandex.uz/maps/org/183122456222/?ll=69.260693%2C41.279370&z=17',
-        images: [],
-        bottomImage: Assets.images.bottomflowersYellow.image(),
-        topImage: Assets.images.topflowersYellow.image(),
-        circleCenterImage: Assets.images.centerinvetationflower.image(
-          fit: BoxFit.fill,
-        ),
-      ),
-    );
+    templateNotifier = ValueNotifier(widget.editTemplate.template.template);
 
     mainTextController = TextEditingController(text: templateNotifier.value.mainText);
     husbandNameController = TextEditingController(text: templateNotifier.value.husbandName);
@@ -116,6 +102,19 @@ class _EditInvitationScreenState extends State<EditInvitationScreen> {
     String? addressUrl,
     List<String>? images,
   }) {
+    print(' templateNotifier.value: ${templateNotifier.value}');
+    final a = templateNotifier.value.copyWith(
+      mainText: mainText,
+      husbandName: husbandName,
+      wifeName: wifeName,
+      weddingDate: weddingDate,
+      weddingTime: weddingTime,
+      description: description,
+      addressName: addressName,
+      addressUrl: addressUrl,
+      images: images,
+    );
+    print('asdasdas aa: ${a == templateNotifier.value}');
     templateNotifier.value = templateNotifier.value.copyWith(
       mainText: mainText,
       husbandName: husbandName,
@@ -127,23 +126,23 @@ class _EditInvitationScreenState extends State<EditInvitationScreen> {
       addressUrl: addressUrl,
       images: images,
     );
+    
+    print(' templateNotifier.value: ${templateNotifier.value}');
   }
 
   Future<void> _pickImage() async {
     var result = await FilePicker.platform.pickFiles(
       type: FileType.image,
       allowMultiple: true,
-      withData: kIsWeb, // Web uchun faylning bytes ni olamiz
+      withData: kIsWeb,
     );
 
     if (result != null) {
       var selectedImages = <String>[];
 
       if (kIsWeb) {
-        // Web platforma uchun base64 formatga o‘tkazamiz
         selectedImages = result.files.map((file) => base64Encode(file.bytes!)).toList();
       } else {
-        // Mobile uchun fayl yo‘llarini olish
         selectedImages = result.paths.whereType<String>().toList();
       }
 
@@ -153,7 +152,7 @@ class _EditInvitationScreenState extends State<EditInvitationScreen> {
 
   Future<void> _selectWeddingDate() async {
     var selectedDate = templateNotifier.value.weddingDate;
-    await showCupertinoDialog(
+    await showCupertinoDialog<void>(
       context: context,
       builder: (context) => CupertinoAlertDialog(
         title: const Text('Sana tanlash'),
@@ -189,7 +188,7 @@ class _EditInvitationScreenState extends State<EditInvitationScreen> {
 
   Future<void> _selectWeddingTime() async {
     var selectedTime = templateNotifier.value.weddingTime;
-    await showCupertinoDialog(
+    await showCupertinoDialog<void>(
       context: context,
       builder: (context) => CupertinoAlertDialog(
         title: const Text('Soat tanlash'),
@@ -255,7 +254,7 @@ class _EditInvitationScreenState extends State<EditInvitationScreen> {
                           ),
                           child: Padding(
                             padding: const EdgeInsets.all(8),
-                            child: ValueListenableBuilder<YellowTemplate>(
+                            child: ValueListenableBuilder<TemplateModel>(
                               valueListenable: templateNotifier,
                               builder: (context, template, child) => SizedBox(
                                 width: context.height * .5,
@@ -265,7 +264,7 @@ class _EditInvitationScreenState extends State<EditInvitationScreen> {
                                   decoration: const BoxDecoration(
                                     borderRadius: BorderRadius.all(Radius.circular(30)),
                                   ),
-                                  child: Invitation3100(yellowTemplate: template),
+                                  child: widget.editTemplate.template,
                                 ),
                               ),
                             ),
@@ -330,7 +329,7 @@ class _EditInvitationScreenState extends State<EditInvitationScreen> {
                                     borderRadius: BorderRadius.all(Radius.circular(10)),
                                   ),
                                 ),
-                                child: ValueListenableBuilder<YellowTemplate>(
+                                child: ValueListenableBuilder<TemplateModel>(
                                   valueListenable: templateNotifier,
                                   builder: (context, template, child) => Text(
                                     template.weddingDate.toFormattedString(),
@@ -368,7 +367,7 @@ class _EditInvitationScreenState extends State<EditInvitationScreen> {
                                     borderRadius: BorderRadius.all(Radius.circular(10)),
                                   ),
                                 ),
-                                child: ValueListenableBuilder<YellowTemplate>(
+                                child: ValueListenableBuilder<TemplateModel>(
                                   valueListenable: templateNotifier,
                                   builder: (context, template, child) => Text(
                                     style: context.textTheme.bodyMedium?.copyWith(
@@ -388,7 +387,7 @@ class _EditInvitationScreenState extends State<EditInvitationScreen> {
                             ),
                           ),
                           AppUtils.kGap8,
-                          ValueListenableBuilder<YellowTemplate>(
+                          ValueListenableBuilder<TemplateModel>(
                             valueListenable: templateNotifier,
                             builder: (context, template, child) => Wrap(
                               spacing: 10,

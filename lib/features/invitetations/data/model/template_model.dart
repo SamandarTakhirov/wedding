@@ -1,7 +1,10 @@
+import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
 
-class YellowTemplate {
-  const YellowTemplate({
+import '../../../../gen/assets.gen.dart';
+
+class TemplateModel extends Equatable {
+  const TemplateModel({
     required this.mainText,
     required this.husbandName,
     required this.wifeName,
@@ -14,9 +17,10 @@ class YellowTemplate {
     this.circleCenterImage,
     this.bottomImage,
     this.topImage,
+    this.isDesable,
   });
 
-  factory YellowTemplate.fromJson(Map<String, Object?> json) => YellowTemplate(
+  factory TemplateModel.fromJson(Map<String, Object?> json) => TemplateModel(
         mainText: json['mainText'] as String,
         husbandName: json['husbandName'] as String,
         wifeName: json['wifeName'] as String,
@@ -28,9 +32,9 @@ class YellowTemplate {
         description: json['description'] as String,
         addressName: json['addressName'] as String,
         addressUrl: json['addressUrl'] as String,
+        isDesable: json['isDesable'] as bool,
         images: List<String>.from(json['images'] as List),
-        circleCenterImage:
-            json['circleCenterImage'] != null ? Image.network(json['circleCenterImage'] as String) : null,
+        circleCenterImage: json['circleCenterImage'] as AssetGenImage,
         bottomImage: json['bottomImage'] != null ? Image.network(json['bottomImage'] as String) : null,
         topImage: json['topImage'] != null ? Image.network(json['topImage'] as String) : null,
       );
@@ -44,11 +48,12 @@ class YellowTemplate {
   final String addressName;
   final String addressUrl;
   final List<String>? images;
-  final Widget? circleCenterImage;
+  final AssetGenImage? circleCenterImage;
   final Widget? bottomImage;
   final Widget? topImage;
+  final bool? isDesable;
 
-  YellowTemplate copyWith({
+  TemplateModel copyWith({
     String? mainText,
     String? husbandName,
     String? wifeName,
@@ -58,11 +63,12 @@ class YellowTemplate {
     String? addressName,
     String? addressUrl,
     List<String>? images,
-    Widget? circleCenterImage,
+    AssetGenImage? circleCenterImage,
     Widget? bottomImage,
     Widget? topImage,
+    bool? isDesable,
   }) =>
-      YellowTemplate(
+      TemplateModel(
         mainText: mainText ?? this.mainText,
         husbandName: husbandName ?? this.husbandName,
         wifeName: wifeName ?? this.wifeName,
@@ -75,5 +81,23 @@ class YellowTemplate {
         circleCenterImage: circleCenterImage ?? this.circleCenterImage,
         bottomImage: bottomImage ?? this.bottomImage,
         topImage: topImage ?? this.topImage,
+        isDesable: isDesable ?? this.isDesable,
       );
+
+  @override
+  List<Object?> get props => [
+        mainText,
+        husbandName,
+        wifeName,
+        weddingDate,
+        weddingTime,
+        description,
+        addressName,
+        addressUrl,
+        images,
+        circleCenterImage,
+        bottomImage,
+        topImage,
+        isDesable,
+      ];
 }
