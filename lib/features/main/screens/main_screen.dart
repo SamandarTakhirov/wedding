@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/svg.dart';
 import 'package:go_router/go_router.dart';
 
 import '../../../constants/app_colors.dart';
@@ -96,7 +95,7 @@ class _MainScreenState extends State<MainScreen> with TickerProviderStateMixin {
 
   Widget _buildMenuButton({
     required int index,
-    required String icon,
+    required SvgGenImage icon,
     required String title,
     required BuildContext context,
     required bool isCompact,
@@ -122,8 +121,7 @@ class _MainScreenState extends State<MainScreen> with TickerProviderStateMixin {
         child: Row(
           mainAxisAlignment: isCompact ? MainAxisAlignment.center : MainAxisAlignment.start,
           children: [
-            SvgPicture.asset(
-              icon,
+            icon.svg(
               color: isSelected ? Colors.white : AppColors.grey,
               width: 24,
               height: 24,

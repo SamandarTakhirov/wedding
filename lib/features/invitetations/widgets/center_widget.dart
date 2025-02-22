@@ -1,20 +1,38 @@
 import 'package:flutter/material.dart';
 
+import '../../../constants/app_colors.dart';
+import '../../../core/extension/extension.dart';
 import '../../../core/utils/context_utils.dart';
+import '../../../gen/assets.gen.dart';
 
 class CenterWidget extends StatefulWidget {
   const CenterWidget({
-    required this.child,
+    required this.image,
     required this.husbandName,
     required this.wifeName,
+    this.husbandTextAlign = Alignment.center,
+    this.wifeTextAlign = Alignment.center,
+    this.topSpaceWidget,
+    this.bottomSpaceWidget,
+    this.fontName = 'GreatVibes',
+    this.color = AppColors.yellowTemplateColor,
+    this.padding = 20,
     super.key,
   });
 
-  final Widget child;
+  final AssetGenImage image;
   final String husbandName;
   final String wifeName;
+  final Alignment? husbandTextAlign;
+  final Alignment? wifeTextAlign;
+  final Widget? topSpaceWidget;
+  final Widget? bottomSpaceWidget;
+  final String? fontName;
+  final Color? color;
+  final double? padding;
 
   @override
+  // ignore: library_private_types_in_public_api
   _CenterWidgetState createState() => _CenterWidgetState();
 }
 
@@ -39,7 +57,7 @@ class _CenterWidgetState extends State<CenterWidget> with SingleTickerProviderSt
       CurvedAnimation(parent: _controller, curve: Curves.elasticOut),
     );
 
-    _controller.forward(); // Animatsiyani boshlash
+    _controller.forward();
   }
 
   @override
@@ -59,17 +77,51 @@ class _CenterWidgetState extends State<CenterWidget> with SingleTickerProviderSt
               child: Stack(
                 alignment: Alignment.center,
                 children: [
-                  widget.child, // Rasm
-                  Positioned.fill(
-                    child: Center(
-                      child: Text(
-                        '${widget.husbandName}\n&\n${widget.wifeName}',
-                        textAlign: TextAlign.center,
-                        style: context.textTheme.displayMedium?.copyWith(
-                          color: const Color(0xFF966737),
-                          fontFamily: 'GreatVibes',
+                  Image.asset(
+                    widget.image.path,
+                    width: context.width * 0.4,
+                    fit: BoxFit.cover,
+                  ),
+                  Padding(
+                    padding:  EdgeInsets.symmetric(horizontal: widget.padding!),
+                    child: Column(
+                      mainAxisSize: MainAxisSize.max,
+                      crossAxisAlignment: CrossAxisAlignment.stretch,
+                      children: [
+                        if (widget.topSpaceWidget.isNotNull) widget.topSpaceWidget!,
+                        Align(
+                          alignment: widget.husbandTextAlign!,
+                          child: Text(
+                            widget.husbandName,
+                            maxLines: 1,
+                            style: context.textTheme.displayMedium?.copyWith(
+                              color: widget.color,
+                              fontFamily: widget.fontName,
+                            ),
+                          ),
                         ),
-                      ),
+                        Text(
+                          '&',
+                          maxLines: 1,
+                          textAlign: TextAlign.center,
+                          style: context.textTheme.displayMedium?.copyWith(
+                            color: widget.color,
+                            fontFamily: 'GreatVibes',
+                          ),
+                        ),
+                        Align(
+                          alignment: widget.wifeTextAlign!,
+                          child: Text(
+                            widget.wifeName,
+                            maxLines: 1,
+                            style: context.textTheme.displayMedium?.copyWith(
+                              color: widget.color,
+                              fontFamily: widget.fontName,
+                            ),
+                          ),
+                        ),
+                        if (widget.bottomSpaceWidget.isNotNull) widget.bottomSpaceWidget!,
+                      ],
                     ),
                   ),
                 ],

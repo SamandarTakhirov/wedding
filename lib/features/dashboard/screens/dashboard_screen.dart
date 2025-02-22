@@ -67,7 +67,11 @@ class _DashboardScreenState extends State<DashboardScreen> {
                           ),
                           itemCount: 3,
                           itemBuilder: (context, index) => InfoItems(
-                            iconName: Assets.svg.user,
+                            svg: Assets.svg.user.svg(
+                              height: 42,
+                              width: 42,
+                              color: Colors.green,
+                            ),
                             infoText: 'Oylik sof daromat',
                             totalPrice: '1 000 000',
                           ),
