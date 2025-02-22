@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
 
+import '../../../constants/app_colors.dart';
 import '../../../core/extension/extension.dart';
 import '../../../core/utils/context_utils.dart';
 
@@ -8,11 +9,17 @@ class DataBuildWidget extends StatelessWidget {
   const DataBuildWidget({
     required this.dateTime,
     required this.eventTime,
+    this.fontName = 'GreatVibes',
+    this.isVertical = true,
+    this.color = AppColors.yellowTemplateColor,
     super.key,
   });
 
   final DateTime dateTime;
   final TimeOfDay eventTime;
+  final String? fontName;
+  final bool isVertical;
+  final Color? color;
 
   Stream<Duration> countdownStream() async* {
     while (true) {
@@ -57,17 +64,53 @@ class DataBuildWidget extends StatelessWidget {
       children: [
         Flexible(
           child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceAround,
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: [
-              DataWidget(text: day),
-              Text(
-                month,
-                style: context.textTheme.headlineLarge?.copyWith(
-                  color: const Color(0xFF966737),
-                  fontFamily: 'GreatVibes',
-                ),
+              DataWidget(
+                color: color!,
+                text: isVertical ? day : month,
+                fontName: fontName!,
+                isVertical: isVertical,
               ),
-              DataWidget(text: year),
+              Row(
+                spacing: 20,
+                children: [
+                  if (!isVertical)
+                    SizedBox(
+                      height: 60,
+                      width: 1,
+                      child: DecoratedBox(
+                        decoration: BoxDecoration(color: color),
+                      ),
+                    ),
+                  Text(
+                    isVertical ? month : day,
+                    style: isVertical
+                        ? context.textTheme.displayMedium?.copyWith(
+                            color: color,
+                            fontFamily: fontName,
+                          )
+                        : context.textTheme.displayLarge?.copyWith(
+                            color: color,
+                            fontFamily: fontName,
+                          ),
+                  ),
+                  if (!isVertical)
+                    SizedBox(
+                      height: 60,
+                      width: 1,
+                      child: DecoratedBox(
+                        decoration: BoxDecoration(color: color),
+                      ),
+                    ),
+                ],
+              ),
+              DataWidget(
+                color: color!,
+                text: year,
+                fontName: fontName!,
+                isVertical: isVertical,
+              ),
             ],
           ),
         ),
@@ -79,8 +122,8 @@ class DataBuildWidget extends StatelessWidget {
               return Text(
                 'Tadbir allaqachon boshlangan!',
                 style: context.textTheme.headlineMedium?.copyWith(
-                  color: const Color(0xFF966737),
-                  fontFamily: 'GreatVibes',
+                  color: color,
+                  fontFamily: fontName,
                 ),
               );
             }
@@ -96,14 +139,14 @@ class DataBuildWidget extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 if (days > 0) ...[
-                  timeWidget('$days', 'Kun'),
-                  timerDivider(),
+                  timeWidget('$days', 'Kun', fontName!, color!),
+                  timerDivider(fontName!, color!),
                 ],
-                timeWidget('$hours', 'Soat'),
-                timerDivider(),
-                timeWidget('$minutes', 'Daqiqa'),
-                timerDivider(),
-                timeWidget('$seconds', 'Soniya'),
+                timeWidget('$hours', 'Soat', fontName!, color!),
+                timerDivider(fontName!, color!),
+                timeWidget('$minutes', 'Daqiqa', fontName!, color!),
+                timerDivider(fontName!, color!),
+                timeWidget('$seconds', 'Soniya', fontName!, color!),
               ],
             );
           },
@@ -113,66 +156,77 @@ class DataBuildWidget extends StatelessWidget {
   }
 }
 
-Widget timerDivider() => const Text(
+Widget timerDivider(String fontName, Color color) => Text(
       ':',
       style: TextStyle(
-        color: Color(0xFF966737),
-        fontFamily: 'GreatVibes',
+        color: color,
+        fontFamily: fontName,
         fontSize: 50,
       ),
     );
 
-Widget timeWidget(String value, String label) => Column(
+Widget timeWidget(String value, String label, String fontName, Color color) => Column(
       children: [
         Text(
           value,
-          style: const TextStyle(
-            color: Color(0xFF966737),
-            fontFamily: 'GreatVibes',
+          style: TextStyle(
+            color: color,
+            fontFamily: fontName,
             fontSize: 50,
           ),
         ),
         Text(
           label,
-          style: const TextStyle(
-            color: Color(0xFF966737),
+          style: TextStyle(
+            color: color,
             fontSize: 22,
-            fontFamily: 'GreatVibes',
+            fontFamily: fontName,
           ),
         ),
       ],
     );
 
 class DataWidget extends StatelessWidget {
-  const DataWidget({required this.text, super.key});
+  const DataWidget({
+    required this.text,
+    required this.fontName,
+    this.isVertical = true,
+    required this.color,
+    super.key,
+  });
   final String text;
+  final String fontName;
+  final bool isVertical;
+  final Color color;
 
   @override
   Widget build(BuildContext context) => Column(
         mainAxisSize: MainAxisSize.min,
         children: [
-          SizedBox(
-            height: 1,
-            width: context.width > 500 ? 100 : 85,
-            child: const DecoratedBox(
-              decoration: BoxDecoration(color: Color(0xFF966737)),
+          if (isVertical)
+            SizedBox(
+              height: 1,
+              width: context.width > 500 ? 100 : 85,
+              child: DecoratedBox(
+                decoration: BoxDecoration(color: color),
+              ),
             ),
-          ),
           Text(
             text,
-            style: const TextStyle(
-              color: Color(0xFF966737),
-              fontFamily: 'GreatVibes',
+            style: TextStyle(
+              color: color,
+              fontFamily: fontName,
               fontSize: 40,
             ),
           ),
-          SizedBox(
-            height: 1,
-            width: context.width > 500 ? 100 : 85,
-            child: const DecoratedBox(
-              decoration: BoxDecoration(color: Color(0xFF966737)),
+          if (isVertical)
+            SizedBox(
+              height: 1,
+              width: context.width > 500 ? 100 : 85,
+              child: DecoratedBox(
+                decoration: BoxDecoration(color: color),
+              ),
             ),
-          ),
         ],
       );
 }

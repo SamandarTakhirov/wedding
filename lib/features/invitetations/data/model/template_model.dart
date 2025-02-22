@@ -1,6 +1,9 @@
+import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
 
-class TemplateModel {
+import '../../../../gen/assets.gen.dart';
+
+class TemplateModel extends Equatable {
   const TemplateModel({
     required this.mainText,
     required this.husbandName,
@@ -14,6 +17,7 @@ class TemplateModel {
     this.circleCenterImage,
     this.bottomImage,
     this.topImage,
+    this.isDesable,
   });
 
   factory TemplateModel.fromJson(Map<String, Object?> json) => TemplateModel(
@@ -28,9 +32,9 @@ class TemplateModel {
         description: json['description'] as String,
         addressName: json['addressName'] as String,
         addressUrl: json['addressUrl'] as String,
+        isDesable: json['isDesable'] as bool,
         images: List<String>.from(json['images'] as List),
-        circleCenterImage:
-            json['circleCenterImage'] != null ? Image.network(json['circleCenterImage'] as String) : null,
+        circleCenterImage: json['circleCenterImage'] as AssetGenImage,
         bottomImage: json['bottomImage'] != null ? Image.network(json['bottomImage'] as String) : null,
         topImage: json['topImage'] != null ? Image.network(json['topImage'] as String) : null,
       );
@@ -44,9 +48,10 @@ class TemplateModel {
   final String addressName;
   final String addressUrl;
   final List<String>? images;
-  final Widget? circleCenterImage;
+  final AssetGenImage? circleCenterImage;
   final Widget? bottomImage;
   final Widget? topImage;
+  final bool? isDesable;
 
   TemplateModel copyWith({
     String? mainText,
@@ -58,9 +63,10 @@ class TemplateModel {
     String? addressName,
     String? addressUrl,
     List<String>? images,
-    Widget? circleCenterImage,
+    AssetGenImage? circleCenterImage,
     Widget? bottomImage,
     Widget? topImage,
+    bool? isDesable,
   }) =>
       TemplateModel(
         mainText: mainText ?? this.mainText,
@@ -75,5 +81,23 @@ class TemplateModel {
         circleCenterImage: circleCenterImage ?? this.circleCenterImage,
         bottomImage: bottomImage ?? this.bottomImage,
         topImage: topImage ?? this.topImage,
+        isDesable: isDesable ?? this.isDesable,
       );
+
+  @override
+  List<Object?> get props => [
+        mainText,
+        husbandName,
+        wifeName,
+        weddingDate,
+        weddingTime,
+        description,
+        addressName,
+        addressUrl,
+        images,
+        circleCenterImage,
+        bottomImage,
+        topImage,
+        isDesable,
+      ];
 }

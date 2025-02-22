@@ -12,5 +12,7 @@ class AppColors {
   static const backgroundColor = Color(0xFFFAFBFF);
   static const whiteGreen = Color(0xFFD3FFE7);
   static const purple = Color(0xFF5932EA);
-  static const yellowTemplateColor =  Color(0xFF966737);
+  static const yellowTemplateColor = Color(0xFF966737);
+  static const blueTemplateColor = Color(0xFF6A5ACD);
+  static const greenTemplateColor = Color(0xFF808000);
 }

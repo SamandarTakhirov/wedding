@@ -13,6 +13,9 @@ class FontFamily {
   /// Font family: Ananda
   static const String ananda = 'Ananda';
 
+  /// Font family: Coneria
+  static const String coneria = 'Coneria';
+
   /// Font family: Dancing
   static const String dancing = 'Dancing';
 
@@ -24,6 +27,9 @@ class FontFamily {
 
   /// Font family: LucySaid
   static const String lucySaid = 'LucySaid';
+
+  /// Font family: Rolling
+  static const String rolling = 'Rolling';
 
   /// Font family: Weather
   static const String weather = 'Weather';

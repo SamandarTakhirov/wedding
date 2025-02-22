@@ -7,7 +7,12 @@ import '../../../core/utils/utils.dart';
 import '../../../gen/assets.gen.dart';
 
 class AdsWidget extends StatelessWidget {
-  const AdsWidget({super.key});
+  const AdsWidget({
+     this.color = AppColors.yellowTemplateColor,
+    super.key,
+  });
+
+  final Color color;
 
   Future<void> _openTelegram() async {
     final url = Uri.parse('https://t.me/taklifnomavip');
@@ -37,7 +42,7 @@ class AdsWidget extends StatelessWidget {
               'Sayt taklifnomaga buyurtma berish:',
               textAlign: TextAlign.center,
               style: context.textTheme.headlineMedium?.copyWith(
-                color: const Color(0xFF966737),
+                color:color,
                 fontFamily: 'Dancing',
               ),
             ),
@@ -47,6 +52,7 @@ class AdsWidget extends StatelessWidget {
                 Row(
                   children: [
                     BuildTextButton(
+                      color: color,
                       onTap: _openInstagram,
                       svg: Assets.svg.instagram,
                       text: 'Instagram',
@@ -56,6 +62,7 @@ class AdsWidget extends StatelessWidget {
                 Row(
                   children: [
                     BuildTextButton(
+                      color: color,
                       onTap: _openTelegram,
                       svg: Assets.svg.telegram,
                       text: 'Telegram',
@@ -74,12 +81,14 @@ class BuildTextButton extends StatelessWidget {
     required this.svg,
     required this.text,
     required this.onTap,
+    required this.color,
     super.key,
   });
 
   final String text;
   final SvgGenImage svg;
   final void Function() onTap;
+  final Color color;
 
   @override
   Widget build(BuildContext context) => TextButton(
@@ -92,13 +101,13 @@ class BuildTextButton extends StatelessWidget {
             svg.svg(
               width: 24,
               height: 24,
-              color: AppColors.yellowTemplateColor,
+              color:color,
             ),
             AppUtils.kGap4,
             Text(
               text,
               style: context.textTheme.headlineMedium?.copyWith(
-                color: AppColors.yellowTemplateColor,
+                color:color,
                 fontFamily: 'Dancing',
               ),
             ),

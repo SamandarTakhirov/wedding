@@ -2,12 +2,8 @@ import 'dart:io';
 import 'dart:math' as math;
 
 import 'package:flutter/material.dart';
-import 'package:go_router/go_router.dart';
 
-import '../../gen/assets.gen.dart';
 import '../theme/themes.dart';
-import '../utils/logger.dart';
-import 'num_extensions.dart';
 
 part 'bool_extension.dart';
 part 'build_context_extension.dart';

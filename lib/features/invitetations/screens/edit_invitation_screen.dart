@@ -11,13 +11,17 @@ import '../../../core/extension/date_formatter.dart';
 import '../../../core/extension/extension.dart';
 import '../../../core/utils/context_utils.dart';
 import '../../../core/utils/utils.dart';
-import '../../../gen/assets.gen.dart';
+import '../data/model/template_info_model.dart';
 import '../data/model/template_model.dart';
-import '../templates/invitation3100.dart';
 import '../widgets/edit_invitation_text_field.dart';
 
 class EditInvitationScreen extends StatefulWidget {
-  const EditInvitationScreen({super.key});
+  const EditInvitationScreen({
+    required this.editTemplate,
+    super.key,
+  });
+
+  final TemplateInfoModel editTemplate;
 
   @override
   State<EditInvitationScreen> createState() => _EditInvitationScreenState();
@@ -38,25 +42,7 @@ class _EditInvitationScreenState extends State<EditInvitationScreen> {
   void initState() {
     super.initState();
 
-    templateNotifier = ValueNotifier(
-      TemplateModel(
-        mainText: 'The Wedding Day',
-        husbandName: 'Temur',
-        wifeName: 'Sarvinozxon',
-        weddingDate: DateTime(2025, 3, 7),
-        weddingTime: const TimeOfDay(hour: 19, minute: 0),
-        description:
-            'Aziz mehmonimiz, Sizni 19:00 da boshlanadigan Visol oqshomimizga taklif etamiz. Siz bilan ushbu baxtli onlarni baham ko‘rish biz uchun sharaf!',
-        addressName: 'Toshkent shahar, Yakkasaroy to\'yxonasi',
-        addressUrl: 'https://yandex.uz/maps/org/183122456222/?ll=69.260693%2C41.279370&z=17',
-        images: [],
-        bottomImage: Assets.images.bottomflowersYellow.image(),
-        topImage: Assets.images.topflowersYellow.image(),
-        circleCenterImage: Assets.images.centerinvetationflower.image(
-          fit: BoxFit.fill,
-        ),
-      ),
-    );
+    templateNotifier = ValueNotifier(widget.editTemplate.template.template);
 
     mainTextController = TextEditingController(text: templateNotifier.value.mainText);
     husbandNameController = TextEditingController(text: templateNotifier.value.husbandName);
@@ -116,6 +102,19 @@ class _EditInvitationScreenState extends State<EditInvitationScreen> {
     String? addressUrl,
     List<String>? images,
   }) {
+    print(' templateNotifier.value: ${templateNotifier.value}');
+    final a = templateNotifier.value.copyWith(
+      mainText: mainText,
+      husbandName: husbandName,
+      wifeName: wifeName,
+      weddingDate: weddingDate,
+      weddingTime: weddingTime,
+      description: description,
+      addressName: addressName,
+      addressUrl: addressUrl,
+      images: images,
+    );
+    print('asdasdas aa: ${a == templateNotifier.value}');
     templateNotifier.value = templateNotifier.value.copyWith(
       mainText: mainText,
       husbandName: husbandName,
@@ -127,6 +126,8 @@ class _EditInvitationScreenState extends State<EditInvitationScreen> {
       addressUrl: addressUrl,
       images: images,
     );
+    
+    print(' templateNotifier.value: ${templateNotifier.value}');
   }
 
   Future<void> _pickImage() async {
@@ -151,7 +152,7 @@ class _EditInvitationScreenState extends State<EditInvitationScreen> {
 
   Future<void> _selectWeddingDate() async {
     var selectedDate = templateNotifier.value.weddingDate;
-    await showCupertinoDialog(
+    await showCupertinoDialog<void>(
       context: context,
       builder: (context) => CupertinoAlertDialog(
         title: const Text('Sana tanlash'),
@@ -187,7 +188,7 @@ class _EditInvitationScreenState extends State<EditInvitationScreen> {
 
   Future<void> _selectWeddingTime() async {
     var selectedTime = templateNotifier.value.weddingTime;
-    await showCupertinoDialog(
+    await showCupertinoDialog<void>(
       context: context,
       builder: (context) => CupertinoAlertDialog(
         title: const Text('Soat tanlash'),
@@ -263,7 +264,7 @@ class _EditInvitationScreenState extends State<EditInvitationScreen> {
                                   decoration: const BoxDecoration(
                                     borderRadius: BorderRadius.all(Radius.circular(30)),
                                   ),
-                                  child: Invitation3100(template: template),
+                                  child: widget.editTemplate.template,
                                 ),
                               ),
                             ),
