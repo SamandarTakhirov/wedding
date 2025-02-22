@@ -207,10 +207,11 @@ class _InvitetationScreenState extends State<InvitetationScreen> with SingleTick
                     GridView.builder(
                       controller: _scrollController,
                       padding: const EdgeInsets.all(16),
-                      gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                        crossAxisCount: 3,
+                      gridDelegate: const SliverGridDelegateWithMaxCrossAxisExtent(
+                        maxCrossAxisExtent: 500,
+                        mainAxisExtent: 780,
                         mainAxisSpacing: 16,
-                        crossAxisSpacing: 0,
+                        crossAxisSpacing: 16,
                         childAspectRatio: 0.6,
                       ),
                       itemCount: allTemplates.length,
@@ -218,14 +219,16 @@ class _InvitetationScreenState extends State<InvitetationScreen> with SingleTick
                         templateInfoModel: allTemplates[index],
                       ),
                     ),
+
                     // To'y Taklifnomalari
                     GridView.builder(
                       controller: _scrollController,
                       padding: const EdgeInsets.all(16),
-                      gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                        crossAxisCount: 3,
+                      gridDelegate: const SliverGridDelegateWithMaxCrossAxisExtent(
+                        maxCrossAxisExtent: 500,
+                        mainAxisExtent: 780,
                         mainAxisSpacing: 16,
-                        crossAxisSpacing: 0,
+                        crossAxisSpacing: 16,
                         childAspectRatio: 0.6,
                       ),
                       itemCount: weddingTemplates.length,
@@ -237,10 +240,11 @@ class _InvitetationScreenState extends State<InvitetationScreen> with SingleTick
                     GridView.builder(
                       controller: _scrollController,
                       padding: const EdgeInsets.all(16),
-                      gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                        crossAxisCount: 3,
+                      gridDelegate: const SliverGridDelegateWithMaxCrossAxisExtent(
+                        maxCrossAxisExtent: 500,
+                        mainAxisExtent: 780,
                         mainAxisSpacing: 16,
-                        crossAxisSpacing: 0,
+                        crossAxisSpacing: 16,
                         childAspectRatio: 0.6,
                       ),
                       itemCount: birthdayTemplates.length,
@@ -252,10 +256,11 @@ class _InvitetationScreenState extends State<InvitetationScreen> with SingleTick
                     GridView.builder(
                       controller: _scrollController,
                       padding: const EdgeInsets.all(16),
-                      gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                        crossAxisCount: 3,
+                      gridDelegate: const SliverGridDelegateWithMaxCrossAxisExtent(
+                        maxCrossAxisExtent: 500,
+                        mainAxisExtent: 780,
                         mainAxisSpacing: 16,
-                        crossAxisSpacing: 0,
+                        crossAxisSpacing: 16,
                         childAspectRatio: 0.6,
                       ),
                       itemCount: greetingTemplates.length,
@@ -267,10 +272,11 @@ class _InvitetationScreenState extends State<InvitetationScreen> with SingleTick
                     GridView.builder(
                       controller: _scrollController,
                       padding: const EdgeInsets.all(16),
-                      gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                        crossAxisCount: 3,
+                      gridDelegate: const SliverGridDelegateWithMaxCrossAxisExtent(
+                        maxCrossAxisExtent: 500,
+                        mainAxisExtent: 780,
                         mainAxisSpacing: 16,
-                        crossAxisSpacing: 0,
+                        crossAxisSpacing: 16,
                         childAspectRatio: 0.6,
                       ),
                       itemCount: cradleTemplates.length,
