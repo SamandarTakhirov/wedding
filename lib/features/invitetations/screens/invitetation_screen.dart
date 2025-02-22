@@ -1,4 +1,3 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 import '../../../constants/app_colors.dart';
@@ -34,7 +33,6 @@ class _InvitetationScreenState extends State<InvitetationScreen> with SingleTick
   @override
   void initState() {
     super.initState();
-    // Template va listalarni yaratish (avvalgi kod kabi)
     yellowTemplate = TemplateModel(
       mainText: 'Nikoh to\'yi',
       husbandName: 'Kamoliddin',
@@ -200,7 +198,7 @@ class _InvitetationScreenState extends State<InvitetationScreen> with SingleTick
                   Tab(text: 'Beshik to\'y'),
                 ],
               ),
-              Expanded(
+              Flexible(
                 child: TabBarView(
                   controller: _tabController,
                   children: [
@@ -219,8 +217,6 @@ class _InvitetationScreenState extends State<InvitetationScreen> with SingleTick
                         templateInfoModel: allTemplates[index],
                       ),
                     ),
-
-                    // To'y Taklifnomalari
                     GridView.builder(
                       controller: _scrollController,
                       padding: const EdgeInsets.all(16),
@@ -252,7 +248,6 @@ class _InvitetationScreenState extends State<InvitetationScreen> with SingleTick
                         templateInfoModel: birthdayTemplates[index],
                       ),
                     ),
-                    // Tabriknoma
                     GridView.builder(
                       controller: _scrollController,
                       padding: const EdgeInsets.all(16),
@@ -268,7 +263,6 @@ class _InvitetationScreenState extends State<InvitetationScreen> with SingleTick
                         templateInfoModel: greetingTemplates[index],
                       ),
                     ),
-                    // Beshik to'y
                     GridView.builder(
                       controller: _scrollController,
                       padding: const EdgeInsets.all(16),
