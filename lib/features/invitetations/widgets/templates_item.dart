@@ -4,7 +4,6 @@ import 'package:go_router/go_router.dart';
 
 import '../../../constants/app_colors.dart';
 import '../../../core/utils/context_utils.dart';
-import '../../../router/app_route.dart';
 import '../data/model/template_info_model.dart';
 import 'custom_richtext.dart';
 
@@ -22,8 +21,9 @@ class TemplatesItem extends StatefulWidget {
 
 class _TemplatesItemState extends State<TemplatesItem> {
   @override
-  Widget build(BuildContext context) => Padding(
-        padding: const EdgeInsets.only(left: 24),
+  Widget build(BuildContext context) => SizedBox(
+        height: 780,
+        width: 500,
         child: DecoratedBox(
           decoration: const BoxDecoration(
             color: AppColors.white,
@@ -42,15 +42,23 @@ class _TemplatesItemState extends State<TemplatesItem> {
               crossAxisAlignment: CrossAxisAlignment.stretch,
               mainAxisSize: MainAxisSize.min,
               children: [
-                Container(
-                  height: 650,
-                  padding: const EdgeInsets.all(5),
-                  decoration: const BoxDecoration(
-                    borderRadius: BorderRadius.all(
-                      Radius.circular(30),
+                GestureDetector(
+                  onTap: () {
+                    if (widget.templateInfoModel.price != 0)
+                      context.go(
+                        '/view_invitation/${widget.templateInfoModel.templateCode.replaceAll("#", "")}/${widget.templateInfoModel.template.template.husbandName}/${widget.templateInfoModel.template.template.wifeName}',
+                        extra: widget.templateInfoModel.template,
+                      );
+                  },
+                  child: Container(
+                    height: 650,
+                    width: 500,
+                    padding: const EdgeInsets.all(5),
+                    decoration: const BoxDecoration(
+                      borderRadius: BorderRadius.all(Radius.circular(30)),
                     ),
+                    child: widget.templateInfoModel.template,
                   ),
-                  child: Flexible(child: widget.templateInfoModel.template),
                 ),
                 CustomRichtext(
                   mainText: widget.templateInfoModel.templateCode,
@@ -72,8 +80,8 @@ class _TemplatesItemState extends State<TemplatesItem> {
                       ),
                       IconButton(
                         onPressed: () {
-                          context.pushReplacementNamed(
-                            Routes.editInvitetation,
+                          context.go(
+                            '/invitetation/${widget.templateInfoModel.templateCode.replaceAll("#", "")}/edit',
                             extra: widget.templateInfoModel,
                           );
                         },

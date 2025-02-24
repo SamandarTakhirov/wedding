@@ -202,87 +202,60 @@ class _InvitetationScreenState extends State<InvitetationScreen> with SingleTick
                 child: TabBarView(
                   controller: _tabController,
                   children: [
-                    GridView.builder(
-                      controller: _scrollController,
-                      padding: const EdgeInsets.all(16),
-                      gridDelegate: const SliverGridDelegateWithMaxCrossAxisExtent(
-                        maxCrossAxisExtent: 500,
-                        mainAxisExtent: 780,
-                        mainAxisSpacing: 16,
-                        crossAxisSpacing: 16,
-                        childAspectRatio: 0.6,
-                      ),
-                      itemCount: allTemplates.length,
-                      itemBuilder: (context, index) => TemplatesItem(
-                        templateInfoModel: allTemplates[index],
-                      ),
+                    CustomGridView(
+                      scrollController: _scrollController,
+                      template: allTemplates,
                     ),
-                    GridView.builder(
-                      controller: _scrollController,
-                      padding: const EdgeInsets.all(16),
-                      gridDelegate: const SliverGridDelegateWithMaxCrossAxisExtent(
-                        maxCrossAxisExtent: 500,
-                        mainAxisExtent: 780,
-                        mainAxisSpacing: 16,
-                        crossAxisSpacing: 16,
-                        childAspectRatio: 0.6,
-                      ),
-                      itemCount: weddingTemplates.length,
-                      itemBuilder: (context, index) => TemplatesItem(
-                        templateInfoModel: weddingTemplates[index],
-                      ),
+                    CustomGridView(
+                      scrollController: _scrollController,
+                      template: weddingTemplates,
                     ),
-                    // Tug'ilgan Kun
-                    GridView.builder(
-                      controller: _scrollController,
-                      padding: const EdgeInsets.all(16),
-                      gridDelegate: const SliverGridDelegateWithMaxCrossAxisExtent(
-                        maxCrossAxisExtent: 500,
-                        mainAxisExtent: 780,
-                        mainAxisSpacing: 16,
-                        crossAxisSpacing: 16,
-                        childAspectRatio: 0.6,
-                      ),
-                      itemCount: birthdayTemplates.length,
-                      itemBuilder: (context, index) => TemplatesItem(
-                        templateInfoModel: birthdayTemplates[index],
-                      ),
+                    CustomGridView(
+                      scrollController: _scrollController,
+                      template: birthdayTemplates,
                     ),
-                    GridView.builder(
-                      controller: _scrollController,
-                      padding: const EdgeInsets.all(16),
-                      gridDelegate: const SliverGridDelegateWithMaxCrossAxisExtent(
-                        maxCrossAxisExtent: 500,
-                        mainAxisExtent: 780,
-                        mainAxisSpacing: 16,
-                        crossAxisSpacing: 16,
-                        childAspectRatio: 0.6,
-                      ),
-                      itemCount: greetingTemplates.length,
-                      itemBuilder: (context, index) => TemplatesItem(
-                        templateInfoModel: greetingTemplates[index],
-                      ),
+                    CustomGridView(
+                      scrollController: _scrollController,
+                      template: greetingTemplates,
                     ),
-                    GridView.builder(
-                      controller: _scrollController,
-                      padding: const EdgeInsets.all(16),
-                      gridDelegate: const SliverGridDelegateWithMaxCrossAxisExtent(
-                        maxCrossAxisExtent: 500,
-                        mainAxisExtent: 780,
-                        mainAxisSpacing: 16,
-                        crossAxisSpacing: 16,
-                        childAspectRatio: 0.6,
-                      ),
-                      itemCount: cradleTemplates.length,
-                      itemBuilder: (context, index) => TemplatesItem(
-                        templateInfoModel: cradleTemplates[index],
-                      ),
+                    CustomGridView(
+                      scrollController: _scrollController,
+                      template: cradleTemplates,
                     ),
                   ],
                 ),
               ),
             ],
           ),
+        ),
+      );
+}
+
+class CustomGridView extends StatelessWidget {
+  const CustomGridView({
+    required this.scrollController,
+    required this.template,
+    super.key,
+  });
+
+  final ScrollController scrollController;
+
+  final List<TemplateInfoModel> template;
+  @override
+  Widget build(BuildContext context) => GridView.builder(
+        controller: scrollController,
+        padding: const EdgeInsets.all(16),
+        shrinkWrap: true,
+        gridDelegate: const SliverGridDelegateWithMaxCrossAxisExtent(
+          maxCrossAxisExtent: 500,
+          mainAxisExtent: 780,
+          mainAxisSpacing: 16,
+          crossAxisSpacing: 16,
+          childAspectRatio: 0.6,
+        ),
+        itemCount: template.length,
+        itemBuilder: (context, index) => TemplatesItem(
+          templateInfoModel: template[index],
         ),
       );
 }

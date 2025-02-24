@@ -7,6 +7,8 @@ import '../features/dashboard/screens/dashboard_screen.dart';
 import '../features/invitetations/data/model/template_info_model.dart';
 import '../features/invitetations/screens/edit_invitation_screen.dart';
 import '../features/invitetations/screens/invitetation_screen.dart';
+import '../features/invitetations/screens/view_invitation_screen.dart';
+import '../features/invitetations/templates/invitation_template.dart';
 import '../features/main/bloc/main_bloc.dart';
 import '../features/main/screens/main_screen.dart';
 import '../features/sales/screens/sales_screen.dart';
@@ -14,7 +16,6 @@ import '../features/sales/screens/sales_screen.dart';
 part 'name_route.dart';
 
 final GlobalKey<NavigatorState> rootNavigatorKey = GlobalKey<NavigatorState>();
-
 final GoRouter router = GoRouter(
   navigatorKey: rootNavigatorKey,
   initialLocation: Routes.initial,
@@ -26,13 +27,8 @@ final GoRouter router = GoRouter(
       builder: (_, __) => const AuthScreen(),
     ),
     StatefulShellRoute.indexedStack(
-      parentNavigatorKey: rootNavigatorKey,
-      builder: (
-        _,
-        state,
-        navigationShell,
-      ) =>
-          MultiBlocProvider(
+      // parentNavigatorKey: rootNavigatorKey,
+      builder: (_, state, navigationShell) => MultiBlocProvider(
         providers: [
           BlocProvider<MainBloc>(
             key: state.pageKey,
@@ -78,14 +74,37 @@ final GoRouter router = GoRouter(
       ],
     ),
     GoRoute(
-      path: Routes.editInvitetation,
+      path: '${Routes.invitetation}/:templateId/edit',
       name: Routes.editInvitetation,
       parentNavigatorKey: rootNavigatorKey,
-      
-      builder: (_, state) => EditInvitationScreen(
-       editTemplate: state.extra as TemplateInfoModel,
-      ),
+      builder: (_, state) {
+        final templateId = state.pathParameters['templateId'];
+        final template = state.extra as TemplateInfoModel;
+        return EditInvitationScreen(editTemplate: template);
+      },
+    ),
+    GoRoute(
+      path: '/view_invitation/:templateId/:userGuid/:shifrcode',
+      name: Routes.viewInvitation,
+      parentNavigatorKey: rootNavigatorKey,
+      builder: (_, state) {
+        final templateId = state.pathParameters['templateId'];
+        final userGuid = state.pathParameters['userGuid'];
+        final shifrcode = state.pathParameters['shifrcode'];
+        final template = state.extra!;
+        if (templateId == null || userGuid == null || shifrcode == null) {
+          return const Scaffold(
+            body: Center(child: Text('Xatolik: Parametrlar yetishmayapti!')),
+          );
+        }
+
+        return ViewInvitationScreen(
+          template: template as InvitationTemplate,
+          templateId: templateId,
+          userGuid: userGuid,
+          shifrcode: shifrcode,
+        );
+      },
     ),
   ],
 );
-
