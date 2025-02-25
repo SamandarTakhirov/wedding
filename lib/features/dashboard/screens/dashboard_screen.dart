@@ -77,6 +77,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
       circleCenterImage: Assets.images.bluecenterimage,
     );
     dashboardTemplateModel = [
+      // for (int i = 0; i < 10; i++)
       DashboardTemplateModel(
         customPrice: 100000,
         profit: 20000,
@@ -85,6 +86,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
         taklifnomaVipPrice: 80000,
         template: Invitation3100(template: yellowTemplate),
       ),
+      // for (int i = 0; i < 10; i++)
       DashboardTemplateModel(
         customPrice: 100000,
         profit: 50000,
@@ -93,6 +95,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
         taklifnomaVipPrice: 50000,
         template: Invitation1005(template: greenTemplate),
       ),
+      // for (int i = 0; i < 10; i++)
       DashboardTemplateModel(
         customPrice: 100000,
         profit: 30000,

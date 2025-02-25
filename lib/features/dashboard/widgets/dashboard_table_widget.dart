@@ -23,7 +23,9 @@ class DashboardTableWidget extends StatefulWidget {
 
 class _DashboardTableWidgetState extends State<DashboardTableWidget> {
   final ValueNotifier<int> _editingIndex = ValueNotifier<int>(-1);
+  final ValueNotifier<int> _currentPageNotifier = ValueNotifier<int>(0);
   late final List<ValueNotifier<double>> _customPricesNotifier;
+  final int _rowsPerPage = 14;
 
   @override
   void initState() {
@@ -57,68 +59,80 @@ class _DashboardTableWidgetState extends State<DashboardTableWidget> {
             ),
             child: Padding(
               padding: const EdgeInsets.all(20),
-              child: LayoutBuilder(builder: (context, constraints) {
-                final containerWidth = constraints.maxWidth * 0.9;
-                final fontSize = containerWidth * 0.05;
-                return Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Text(
-                          'Taklifnomalar',
-                          style: context.textTheme.headlineLarge?.copyWith(
-                            fontWeight: FontWeight.w600,
-                            fontSize: fontSize,
-                          ),
-                        ),
-                        if (isSmallScreen)
-                          IconButton(
-                            icon: Icon(
-                              CupertinoIcons.search,
-                              color: AppColors.blue,
-                              size: fontSize * .5,
+              child: LayoutBuilder(
+                builder: (context, constraints) {
+                  final containerWidth = constraints.maxWidth * 0.9;
+                  final fontSize = containerWidth * 0.05;
+                  return Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      // Header va qidiruv qismi
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Text(
+                            'Taklifnomalar',
+                            style: context.textTheme.headlineLarge?.copyWith(
+                              fontWeight: FontWeight.w600,
+                              fontSize: fontSize,
                             ),
-                            onPressed: () {},
-                          )
-                        else
-                          SizedBox(
-                            width: containerWidth * 0.3,
-                            height: containerWidth * 0.05,
-                            child: TextField(
-                              cursorColor: AppColors.blue,
-                              decoration: InputDecoration(
-                                contentPadding: AppUtils.kPadding0,
-                                prefixIcon: Icon(
-                                  CupertinoIcons.search,
-                                  size: fontSize * .3,
-                                ),
-                                hintText: 'Search',
-                                hintStyle: TextStyle(
-                                  fontSize: fontSize * .3,
-                                ),
-                                focusedBorder: const OutlineInputBorder(
-                                  borderRadius: BorderRadius.all(Radius.circular(10)),
-                                  borderSide: BorderSide(color: AppColors.blue, width: 2),
-                                ),
-                                enabledBorder: const OutlineInputBorder(
-                                  borderRadius: BorderRadius.all(Radius.circular(10)),
-                                  borderSide: BorderSide(color: AppColors.grey),
+                          ),
+                          if (isSmallScreen)
+                            IconButton(
+                              icon: Icon(
+                                CupertinoIcons.search,
+                                color: AppColors.blue,
+                                size: fontSize * .5,
+                              ),
+                              onPressed: () {},
+                            )
+                          else
+                            SizedBox(
+                              width: containerWidth * 0.3,
+                              height: containerWidth * 0.05,
+                              child: TextField(
+                                cursorColor: AppColors.blue,
+                                decoration: InputDecoration(
+                                  contentPadding: AppUtils.kPadding0,
+                                  prefixIcon: Icon(
+                                    CupertinoIcons.search,
+                                    size: fontSize * .3,
+                                  ),
+                                  hintText: 'Search',
+                                  hintStyle: TextStyle(
+                                    fontSize: fontSize * .3,
+                                  ),
+                                  focusedBorder: const OutlineInputBorder(
+                                    borderRadius: BorderRadius.all(Radius.circular(10)),
+                                    borderSide: BorderSide(color: AppColors.blue, width: 2),
+                                  ),
+                                  enabledBorder: const OutlineInputBorder(
+                                    borderRadius: BorderRadius.all(Radius.circular(10)),
+                                    borderSide: BorderSide(color: AppColors.grey),
+                                  ),
                                 ),
                               ),
                             ),
-                          ),
-                      ],
-                    ),
-                    _buildDataTable(
-                      fontSize: fontSize,
-                      containerWidth: containerWidth,
-                      dashboardTemplateModel: widget.dashboardTemplateModel,
-                    ),
-                  ],
-                );
-              }),
+                        ],
+                      ),
+                      Expanded(
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            _buildDataTable(
+                              fontSize: fontSize,
+                              containerWidth: containerWidth,
+                              dashboardTemplateModel: widget.dashboardTemplateModel,
+                            ),
+                            const SizedBox(height: 16),
+                            // _buildPaginationButtons(widget.dashboardTemplateModel.length),
+                          ],
+                        ),
+                      ),
+                    ],
+                  );
+                },
+              ),
             ),
           ),
         ),
@@ -146,80 +160,109 @@ class _DashboardTableWidgetState extends State<DashboardTableWidget> {
       fontWeight: FontWeight.bold,
     );
 
-    return SizedBox(
-      width: containerWidth * 1.1,
-      child: DataTable(
-        headingRowColor: WidgetStateProperty.all(AppColors.white),
-        border: TableBorder.all(color: AppColors.white),
-        columns: [
-          DataColumn(label: Text('Code', style: textStyle)),
-          DataColumn(label: Text('Example', style: textStyle)),
-          DataColumn(label: Text('Taklifnoma VIP narx', style: textStyle)),
-          DataColumn(label: Text('Sotuvdagi narx', style: textStyle)),
-          DataColumn(label: Text('Foyda', style: textStyle)),
-        ],
-        rows: List.generate(
-          dashboardTemplateModel.length,
-          (index) {
-            final item = dashboardTemplateModel[index];
-            return DataRow(
-              cells: [
-                DataCell(
-                  Text(
-                    '#${item.templateCode}',
-                    style: textStyleChild,
-                  ),
-                ),
-                DataCell(
-                  TextButton(
-                    child: Text(
-                      item.templateScreenUrl,
-                      style: linkStyle,
+    return ValueListenableBuilder<int>(
+      valueListenable: _currentPageNotifier,
+      builder: (context, currentPage, _) {
+        final startIndex = currentPage * _rowsPerPage;
+        final endIndex = ((currentPage + 1) * _rowsPerPage) < dashboardTemplateModel.length
+            ? ((currentPage + 1) * _rowsPerPage)
+            : dashboardTemplateModel.length;
+        final currentData = dashboardTemplateModel.sublist(startIndex, endIndex);
+
+        return SizedBox(
+          width: containerWidth * 1.1,
+          child: DataTable(
+            headingRowColor: WidgetStateProperty.all(AppColors.white),
+            border: TableBorder.all(color: AppColors.white),
+            columns: [
+              DataColumn(label: Text('Code', style: textStyle)),
+              DataColumn(label: Text('Example', style: textStyle)),
+              DataColumn(label: Text('Taklifnoma VIP narx', style: textStyle)),
+              DataColumn(label: Text('Sotuvdagi narx', style: textStyle)),
+              DataColumn(label: Text('Foyda', style: textStyle)),
+            ],
+            rows: List.generate(
+              currentData.length,
+              (localIndex) {
+                final index = startIndex + localIndex;
+                final item = dashboardTemplateModel[index];
+                return DataRow(
+                  cells: [
+                    DataCell(
+                      Text(
+                        '#${item.templateCode}',
+                        style: textStyleChild,
+                      ),
                     ),
-                    onPressed: () {
-                      context.go(
-                        '/view_invitation/${item.templateCode.replaceAll("#", "")}/${item.template.template.husbandName}/${item.template.template.wifeName}',
-                        extra: item.template,
-                      );
-                    },
-                  ),
-                ),
-                DataCell(
-                  Text('${item.taklifnomaVipPrice.formattedPrice} so\'m', style: textStyleChild),
-                ),
-                DataCell(
-                  ValueListenableBuilder<int>(
-                    valueListenable: _editingIndex,
-                    builder: (context, editingIndex, _) => EditablePriceCell(
-                      isEditing: editingIndex == index,
-                      onStartEditing: () => _editingIndex.value = index,
-                      onStopEditing: () => _editingIndex.value = -1,
-                      onPriceChanged: (newPrice) {
-                        if (newPrice >= item.taklifnomaVipPrice) {
-                          _customPricesNotifier[index].value = newPrice;
-                        }
-                      },
-                      priceNotifier: _customPricesNotifier[index],
-                      minPrice: item.taklifnomaVipPrice,
-                      textStyle: textStyleChild!,
-                      editingTextStyle: textStyleChild,
+                    DataCell(
+                      TextButton(
+                        child: Text(
+                          item.templateScreenUrl,
+                          style: linkStyle,
+                        ),
+                        onPressed: () {
+                          context.go(
+                            '/view_invitation/${item.templateCode.replaceAll("#", "")}/${item.template.template.husbandName}/${item.template.template.wifeName}',
+                            extra: item.template,
+                          );
+                        },
+                      ),
                     ),
-                  ),
-                ),
-                DataCell(
-                  ValueListenableBuilder<double>(
-                    valueListenable: _customPricesNotifier[index],
-                    builder: (context, price, _) {
-                      final profit = price - item.taklifnomaVipPrice;
-                      return Text('${profit.formattedPrice} so\'m', style: textStyleChild);
-                    },
-                  ),
-                ),
-              ],
-            );
-          },
-        ),
-      ),
+                    DataCell(
+                      Text('${item.taklifnomaVipPrice.formattedPrice} so\'m', style: textStyleChild),
+                    ),
+                    DataCell(
+                      ValueListenableBuilder<int>(
+                        valueListenable: _editingIndex,
+                        builder: (context, editingIndex, _) => EditablePriceCell(
+                          isEditing: editingIndex == index,
+                          onStartEditing: () => _editingIndex.value = index,
+                          onStopEditing: () => _editingIndex.value = -1,
+                          onPriceChanged: (newPrice) {
+                            if (newPrice >= item.taklifnomaVipPrice) {
+                              _customPricesNotifier[index].value = newPrice;
+                            }
+                          },
+                          priceNotifier: _customPricesNotifier[index],
+                          minPrice: item.taklifnomaVipPrice,
+                          textStyle: textStyleChild!,
+                          editingTextStyle: textStyleChild,
+                        ),
+                      ),
+                    ),
+                    DataCell(
+                      ValueListenableBuilder<double>(
+                        valueListenable: _customPricesNotifier[index],
+                        builder: (context, price, _) {
+                          final profit = price - item.taklifnomaVipPrice;
+                          return Text('${profit.formattedPrice} so\'m', style: textStyleChild);
+                        },
+                      ),
+                    ),
+                  ],
+                );
+              },
+            ),
+          ),
+        );
+      },
     );
   }
+
+  Widget buildPaginationButtons(int totalItems) => ValueListenableBuilder<int>(
+        valueListenable: _currentPageNotifier,
+        builder: (context, currentPage, _) {
+          final totalPages = (totalItems / _rowsPerPage).ceil();
+          return Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: List.generate(
+              totalPages,
+              (pageIndex) => TextButton(
+                onPressed: () => _currentPageNotifier.value = pageIndex,
+                child: Text('${pageIndex + 1}'),
+              ),
+            ),
+          );
+        },
+      );
 }

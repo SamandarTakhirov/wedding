@@ -4,7 +4,7 @@ import 'package:go_router/go_router.dart';
 import '../../../constants/app_colors.dart';
 import '../../../core/extension/extension.dart';
 import '../../../router/app_route.dart';
-import 'widgets/custom_text_field.dart';
+import '../widgets/custom_text_field.dart';
 
 class AuthScreen extends StatefulWidget {
   const AuthScreen({super.key});
@@ -39,14 +39,19 @@ class _AuthScreenState extends State<AuthScreen> {
       loginError.value = null;
       passwordError.value = null;
       context.pushReplacementNamed(Routes.dashboard);
+    } else if (loginController.text == 'SuperAdmin1' && passwordController.text == 'superAdmin1') {
+      loginError.value = null;
+      passwordError.value = null;
+      context.pushReplacementNamed(Routes.superAdmin);
     } else {
-      if (loginController.text != 'Admin1') {
+      if (loginController.text != 'Admin1' && loginController.text != 'SuperAdmin1') {
         loginError.value = 'Invalid Login';
       } else {
         loginError.value = null;
       }
 
-      if (passwordController.text != 'admin1') {
+      if ((loginController.text == 'Admin1' && passwordController.text != 'admin1') ||
+          (loginController.text == 'SuperAdmin1' && passwordController.text != 'superAdmin1')) {
         passwordError.value = 'Invalid Password';
       } else {
         passwordError.value = null;
