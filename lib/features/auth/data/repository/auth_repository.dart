@@ -1,8 +1,7 @@
-import 'package:dio/dio.dart';
+import 'package:http/http.dart' as http;
+
 import '../../../../core/either/either.dart';
 import '../../../../core/error/failure.dart';
-import '../../../../core/error/server_error.dart';
-import '../../../../core/typedefs/typedefs.dart';
 
 abstract class AuthService {
   Future<Either<Failure, Object?>> loginUser({
@@ -12,37 +11,34 @@ abstract class AuthService {
 }
 
 class AuthServiceImpl implements AuthService {
-  AuthServiceImpl({Dio? dio})
-      : dio = dio ??
-            Dio(
-              BaseOptions(
-                baseUrl: 'http://51.21.219.241:8081',
-                headers: {
-                  'Content-Type': 'application/json',
-                },
-              ),
-            );
+  AuthServiceImpl();
 
-  final Dio dio;
+  // ..httpClientAdapter = IOHttpClientAdapter(
+  //   createHttpClient: () => io.HttpClient()..badCertificateCallback = (cert, host, post) => true,
+  //   validateCertificate: (cert, host, post) => true,
+  // );
 
   @override
   Future<Either<Failure, Object?>> loginUser({required String login, required String password}) async {
+    print('object');
     try {
-      final response = await dio.post<DioResponse>(
-        '/v1/auth/login',
-        data: {
+      final response = await http.post(
+        Uri.http('51.21.219.241:8081', '/v1/auth/login'),
+        body: {
           'login': login,
           'password': password,
         },
       );
-      print('Javob: ${response.data}');
-      return Right(response.data);
-    } on DioException catch (error, stacktrace) {
-      print('DioException: $error, stacktrace: $stacktrace');
-      return Left(ServerError.withDioError(error: error).failure);
-    } on Exception catch (error, stacktrace) {
-      print('Exception: $error, stacktrace: $stacktrace');
-      return Left(ServerError.withError(message: error.toString()).failure);
+      return Right(response.body);
+    } catch (e) {
+      rethrow;
     }
+    // on DioException catch (error, stacktrace) {
+    //   print('DioException: $error, stacktrace: $stacktrace');
+    //   return Left(ServerError.withDioError(error: error).failure);
+    // } on Exception catch (error, stacktrace) {
+    //   print('Exception: $error, stacktrace: $stacktrace');
+    //   return Left(ServerError.withError(message: error.toString()).failure);
+    // }
   }
 }

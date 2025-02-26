@@ -16,7 +16,7 @@ dependencies:
   # custom packages
   local_source:
     path: packages/local_source/
-    
+
   cupertino_icons: ^1.0.8
 
   go_router: ^14.7.2
@@ -34,10 +34,10 @@ dependencies:
   youtube_player_flutter: ^9.1.1
   flutter_gen: ^5.9.0
   shimmer: ^3.0.0
-  dio: ^5.8.0+1
   flutter_bloc: ^9.0.0
   shared_preferences: ^2.5.2
   collection: ^1.19.0
+  http: ^1.3.0
 
   
 dev_dependencies:
