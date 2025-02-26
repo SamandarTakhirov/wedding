@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
-import '../../../constants/app_colors.dart';
-import '../../../core/utils/context_utils.dart';
+import '../../../../constants/app_colors.dart';
+import '../../../../core/utils/context_utils.dart';
 
 class CustomTextField extends StatelessWidget {
   CustomTextField({
@@ -34,7 +34,7 @@ class CustomTextField extends StatelessWidget {
             hintStyle: context.textTheme.labelLarge?.copyWith(
               color: AppColors.grey,
             ),
-            errorText: errorText?.isNotEmpty == true ? errorText : null, // Xatolik matnini qo‘shish
+            errorText: errorText?.isNotEmpty == true ? errorText : null,
             focusedBorder: const OutlineInputBorder(
               borderSide: BorderSide(
                 color: AppColors.blue,

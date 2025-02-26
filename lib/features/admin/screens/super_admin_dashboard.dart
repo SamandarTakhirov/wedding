@@ -53,55 +53,53 @@ class _SuperAdminDashboardState extends State<SuperAdminDashboard> {
   @override
   Widget build(BuildContext context) => Scaffold(
         backgroundColor: AppColors.backgroundColor,
-        body: Flexible(
-          child: ListView(
-            shrinkWrap: true,
-            scrollDirection: Axis.vertical,
-            children: [
-              Padding(
-                padding: const EdgeInsets.all(24),
-                child: Text(
-                  'TaklifnomaVIP Super Admin',
-                  style: context.textTheme.headlineLarge?.copyWith(
-                    fontWeight: FontWeight.w600,
-                  ),
+        body: ListView(
+          shrinkWrap: true,
+          scrollDirection: Axis.vertical,
+          children: [
+            Padding(
+              padding: const EdgeInsets.all(24),
+              child: Text(
+                'TaklifnomaVIP Super Admin',
+                style: context.textTheme.headlineLarge?.copyWith(
+                  fontWeight: FontWeight.w600,
                 ),
               ),
-              SizedBox(
-                width: context.width,
-                child: GridView.builder(
-                  padding: AppUtils.kPaddingHor24,
-                  shrinkWrap: true,
-                  physics: const NeverScrollableScrollPhysics(),
-                  gridDelegate: const SliverGridDelegateWithMaxCrossAxisExtent(
-                    maxCrossAxisExtent: 500,
-                    crossAxisSpacing: 10,
-                    mainAxisSpacing: 10,
-                    childAspectRatio: 4,
-                  ),
-                  itemCount: 3,
-                  itemBuilder: (context, index) => Center(
-                    child: AdminInfoWidget(
-                      svg: Assets.svg.user.svg(
-                        color: Colors.green,
-                      ),
-                      infoText: 'Oylik sof daromat',
-                      totalPrice: '1 000 000',
+            ),
+            SizedBox(
+              width: context.width,
+              child: GridView.builder(
+                padding: AppUtils.kPaddingHor24,
+                shrinkWrap: true,
+                physics: const NeverScrollableScrollPhysics(),
+                gridDelegate: const SliverGridDelegateWithMaxCrossAxisExtent(
+                  maxCrossAxisExtent: 500,
+                  crossAxisSpacing: 10,
+                  mainAxisSpacing: 10,
+                  childAspectRatio: 4,
+                ),
+                itemCount: 3,
+                itemBuilder: (context, index) => Center(
+                  child: AdminInfoWidget(
+                    svg: Assets.svg.user.svg(
+                      color: Colors.green,
                     ),
+                    infoText: 'Oylik sof daromat',
+                    totalPrice: '1 000 000',
                   ),
                 ),
               ),
-              SizedBox(
-                width: context.width,
-                height: context.height,
-                child: Center(
-                  child: AdminDashboardTableWidget(
-                    adminDashboardModel: adminDashboardModel,
-                  ),
+            ),
+            SizedBox(
+              width: context.width,
+              height: context.height,
+              child: Center(
+                child: AdminDashboardTableWidget(
+                  adminDashboardModel: adminDashboardModel,
                 ),
               ),
-            ],
-          ),
+            ),
+          ],
         ),
       );
 }
