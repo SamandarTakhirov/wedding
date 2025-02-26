@@ -2,6 +2,7 @@ import 'package:dio/dio.dart';
 import '../../../../core/either/either.dart';
 import '../../../../core/error/failure.dart';
 import '../../../../core/error/server_error.dart';
+import '../../../../core/typedefs/typedefs.dart';
 
 abstract class AuthService {
   Future<Either<Failure, Object?>> loginUser({
@@ -27,7 +28,7 @@ class AuthServiceImpl implements AuthService {
   @override
   Future<Either<Failure, Object?>> loginUser({required String login, required String password}) async {
     try {
-      final response = await dio.post(
+      final response = await dio.post<DioResponse>(
         '/v1/auth/login',
         data: {
           'login': login,

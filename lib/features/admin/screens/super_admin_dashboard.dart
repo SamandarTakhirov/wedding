@@ -82,6 +82,7 @@ class _SuperAdminDashboardState extends State<SuperAdminDashboard> {
                 itemBuilder: (context, index) => Center(
                   child: AdminInfoWidget(
                     svg: Assets.svg.user.svg(
+                      // ignore: deprecated_member_use_from_same_package
                       color: Colors.green,
                     ),
                     infoText: 'Oylik sof daromat',

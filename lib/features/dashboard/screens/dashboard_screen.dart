@@ -1,4 +1,3 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 import '../../../constants/app_colors.dart';
@@ -6,10 +5,10 @@ import '../../../core/extension/extension.dart';
 import '../../../core/utils/context_utils.dart';
 import '../../../core/utils/utils.dart';
 import '../../../gen/assets.gen.dart';
-import '../../invitetations/data/model/template_model.dart';
-import '../../invitetations/templates/invitation0105.dart';
-import '../../invitetations/templates/invitation1005.dart';
-import '../../invitetations/templates/invitation3100.dart';
+import '../../invitations/data/model/template_model.dart';
+import '../../invitations/templates/invitation0105.dart';
+import '../../invitations/templates/invitation1005.dart';
+import '../../invitations/templates/invitation3100.dart';
 import '../data/model/dashboard_template_model.dart';
 import '../widgets/dashboard_table_widget.dart';
 import '../widgets/info_items.dart';

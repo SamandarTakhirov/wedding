@@ -1,15 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
+import 'package:local_source/local_source.dart';
 
-import '../features/admin/screens/super_admin_dashboard.dart';
 import '../features/auth/presentation/screen/auth_screen.dart';
 import '../features/dashboard/screens/dashboard_screen.dart';
-import '../features/invitetations/data/model/template_info_model.dart';
-import '../features/invitetations/screens/edit_invitation_screen.dart';
-import '../features/invitetations/screens/invitetation_screen.dart';
-import '../features/invitetations/screens/view_invitation_screen.dart';
-import '../features/invitetations/templates/invitation_template.dart';
+import '../features/invitations/data/model/template_info_model.dart';
+import '../features/invitations/screens/edit_invitation_screen.dart';
+import '../features/invitations/screens/invitetation_screen.dart';
+import '../features/invitations/screens/view_invitation_screen.dart';
+import '../features/invitations/templates/invitation_template.dart';
 import '../features/main/bloc/main_bloc.dart';
 import '../features/main/screens/main_screen.dart';
 import '../features/sales/screens/sales_screen.dart';
@@ -17,9 +17,24 @@ import '../features/sales/screens/sales_screen.dart';
 part 'name_route.dart';
 
 final GlobalKey<NavigatorState> rootNavigatorKey = GlobalKey<NavigatorState>();
+
 final GoRouter router = GoRouter(
   navigatorKey: rootNavigatorKey,
   initialLocation: Routes.initial,
+  redirect: (context, state) async {
+    final loggedIn = (await LocalSource.instance).isUserAuthenticated;
+    final isAtLogin = state.path == Routes.initial;
+
+    if (!loggedIn && !isAtLogin) {
+      return Routes.initial;
+    }
+
+    if (loggedIn && isAtLogin) {
+      return Routes.dashboard;
+    }
+
+    return null;
+  },
   routes: [
     GoRoute(
       path: Routes.initial,
@@ -27,14 +42,7 @@ final GoRouter router = GoRouter(
       parentNavigatorKey: rootNavigatorKey,
       builder: (_, __) => const AuthScreen(),
     ),
-    GoRoute(
-      path: Routes.superAdmin,
-      name: Routes.superAdmin,
-      parentNavigatorKey: rootNavigatorKey,
-      builder: (_, __) => const SuperAdminDashboard(),
-    ),
     StatefulShellRoute.indexedStack(
-      // parentNavigatorKey: rootNavigatorKey,
       builder: (_, state, navigationShell) => MultiBlocProvider(
         providers: [
           BlocProvider<MainBloc>(
@@ -59,12 +67,12 @@ final GoRouter router = GoRouter(
           ],
         ),
         StatefulShellBranch(
-          initialLocation: Routes.invitetation,
+          initialLocation: Routes.invitation,
           routes: <RouteBase>[
             GoRoute(
-              path: Routes.invitetation,
-              name: Routes.invitetation,
-              builder: (_, __) => const InvitetationScreen(),
+              path: Routes.invitation,
+              name: Routes.invitation,
+              builder: (_, __) => const InvitationScreen(),
             ),
           ],
         ),
@@ -81,11 +89,11 @@ final GoRouter router = GoRouter(
       ],
     ),
     GoRoute(
-      path: '${Routes.invitetation}/:templateId/edit',
-      name: Routes.editInvitetation,
+      path: '${Routes.invitation}/:templateId/edit',
+      name: Routes.editInvitation,
       parentNavigatorKey: rootNavigatorKey,
       builder: (_, state) {
-        final templateId = state.pathParameters['templateId'];
+        // final templateId = state.pathParameters['templateId'];
         final template = state.extra as TemplateInfoModel;
         return EditInvitationScreen(editTemplate: template);
       },
@@ -98,13 +106,12 @@ final GoRouter router = GoRouter(
         final templateId = state.pathParameters['templateId'];
         final userGuid = state.pathParameters['userGuid'];
         final shifrcode = state.pathParameters['shifrcode'];
-        final template = state.extra!;
+        final template = state.extra;
         if (templateId == null || userGuid == null || shifrcode == null) {
           return const Scaffold(
             body: Center(child: Text('Xatolik: Parametrlar yetishmayapti!')),
           );
         }
-
         return ViewInvitationScreen(
           template: template as InvitationTemplate,
           templateId: templateId,

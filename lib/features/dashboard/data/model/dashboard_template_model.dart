@@ -1,4 +1,4 @@
-import '../../../invitetations/templates/invitation_template.dart';
+import '../../../invitations/templates/invitation_template.dart';
 
 class DashboardTemplateModel {
   const DashboardTemplateModel({

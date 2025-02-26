@@ -10,14 +10,14 @@ import '../templates/invitation1005.dart';
 import '../templates/invitation3100.dart';
 import '../widgets/templates_item.dart';
 
-class InvitetationScreen extends StatefulWidget {
-  const InvitetationScreen({super.key});
+class InvitationScreen extends StatefulWidget {
+  const InvitationScreen({super.key});
 
   @override
-  State<InvitetationScreen> createState() => _InvitetationScreenState();
+  State<InvitationScreen> createState() => _InvitationScreenState();
 }
 
-class _InvitetationScreenState extends State<InvitetationScreen> with SingleTickerProviderStateMixin {
+class _InvitationScreenState extends State<InvitationScreen> with SingleTickerProviderStateMixin {
   late final TemplateModel yellowTemplate;
   late final TemplateModel greenTemplate;
   late final TemplateModel blueTemplate;
