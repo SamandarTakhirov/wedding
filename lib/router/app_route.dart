@@ -2,7 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 
-import '../features/auth/screen/auth_screen.dart';
+import '../features/admin/screens/super_admin_dashboard.dart';
+import '../features/auth/presentation/screen/auth_screen.dart';
 import '../features/dashboard/screens/dashboard_screen.dart';
 import '../features/invitetations/data/model/template_info_model.dart';
 import '../features/invitetations/screens/edit_invitation_screen.dart';
@@ -25,6 +26,12 @@ final GoRouter router = GoRouter(
       name: Routes.initial,
       parentNavigatorKey: rootNavigatorKey,
       builder: (_, __) => const AuthScreen(),
+    ),
+    GoRoute(
+      path: Routes.superAdmin,
+      name: Routes.superAdmin,
+      parentNavigatorKey: rootNavigatorKey,
+      builder: (_, __) => const SuperAdminDashboard(),
     ),
     StatefulShellRoute.indexedStack(
       // parentNavigatorKey: rootNavigatorKey,

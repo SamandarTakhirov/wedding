@@ -56,7 +56,7 @@ class _SalesScreenState extends State<SalesScreen> {
                           color: AppColors.green,
                         ),
                         infoText: 'Barcha sotuvlar',
-                        totalPrice: '300',
+                        totalPrice: '300 ta',
                       ),
                     ),
                   ),

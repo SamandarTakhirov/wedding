@@ -1,4 +1,3 @@
-
 import 'package:flutter/material.dart';
 
 import '../../../constants/app_colors.dart';
@@ -27,10 +26,10 @@ class EditablePriceCell extends StatefulWidget {
   final TextStyle editingTextStyle;
 
   @override
-  _EditablePriceCellState createState() => _EditablePriceCellState();
+  EditablePriceCellState createState() => EditablePriceCellState();
 }
 
-class _EditablePriceCellState extends State<EditablePriceCell> {
+class EditablePriceCellState extends State<EditablePriceCell> {
   late TextEditingController _controller;
 
   @override

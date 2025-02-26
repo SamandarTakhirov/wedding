@@ -34,7 +34,7 @@ class CustomTextField extends StatelessWidget {
             hintStyle: context.textTheme.labelLarge?.copyWith(
               color: AppColors.grey,
             ),
-            errorText: errorText?.isNotEmpty == true ? errorText : null, // Xatolik matnini qo‘shish
+            errorText: errorText?.isNotEmpty == true ? errorText : null,
             focusedBorder: const OutlineInputBorder(
               borderSide: BorderSide(
                 color: AppColors.blue,
