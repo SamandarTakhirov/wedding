@@ -15,7 +15,7 @@ class App extends StatelessWidget {
             selectionHandleColor: AppColors.blue,
           ),
         ),
-        title: 'TaklifnomVIP',
+        title: 'TaklifnomaVIP',
         routerConfig: router,
       );
 }
