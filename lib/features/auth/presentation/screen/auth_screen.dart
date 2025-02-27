@@ -4,6 +4,7 @@ import 'package:go_router/go_router.dart';
 
 import '../../../../constants/app_colors.dart';
 import '../../../../core/extension/extension.dart';
+import '../../../../core/utils/utils.dart';
 import '../../../../router/app_route.dart';
 import '../../data/repository/auth_repository.dart';
 import '../bloc/auth_bloc.dart';
@@ -53,10 +54,10 @@ class _AuthScreenState extends State<AuthScreen> {
                     minWidth: 300,
                   ),
                   child: SizedBox(
-                    width: context.width,
-                    height: context.height * 0.35,
+                    width: constraints.maxWidth,
+                    height: constraints.maxHeight * .5,
                     child: Container(
-                      margin: const EdgeInsets.all(20),
+                      margin: AppUtils.kPadding0,
                       decoration: const BoxDecoration(
                         color: AppColors.white,
                         borderRadius: BorderRadius.all(Radius.circular(30)),
@@ -69,38 +70,44 @@ class _AuthScreenState extends State<AuthScreen> {
                         ],
                       ),
                       child: Padding(
-                        padding: const EdgeInsets.all(20),
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.spaceAround,
-                          children: [
-                            CustomTextField(
-                              controller: loginController,
-                              hintText: 'Login',
-                              errorText: state.loginErrorText,
-                            ),
-                            CustomTextField(
-                              controller: passwordController,
-                              hintText: 'Password',
-                              isPassword: true,
-                              errorText: state.passwordErrorText,
-                            ),
-                            FilledButton(
-                              style: FilledButton.styleFrom(
-                                backgroundColor: AppColors.blue,
-                                fixedSize: Size(context.width, 45),
+                        padding: AppUtils.kPaddingHor24,
+                        child: Center(
+                          child: Column(
+                            mainAxisSize: MainAxisSize.min,
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            spacing: 20,
+                            children: [
+                              CustomTextField(
+                                controller: loginController,
+                                errorText: state.loginErrorText,
                               ),
-                              onPressed: () {
-                                context.read<AuthBloc>().add(
-                                      LoginSubmittedEvent(
-                                        login: loginController.text.trim(),
-                                        password: passwordController.text.trim(),
-                                        context: context,
-                                      ),
-                                    );
-                              },
-                              child: const Text('Kirish'),
-                            ),
-                          ],
+                              CustomTextField(
+                                controller: passwordController,
+                                isPassword: true,
+                                showPassword: state.showPassword,
+                                showPasswordFunction: () {
+                                  context.read<AuthBloc>().add(const ShowPasswordEvent());
+                                },
+                                errorText: state.passwordErrorText,
+                              ),
+                              FilledButton(
+                                style: FilledButton.styleFrom(
+                                  backgroundColor: AppColors.blue,
+                                  fixedSize: Size(context.width, 45),
+                                ),
+                                onPressed: () {
+                                  context.read<AuthBloc>().add(
+                                        LoginSubmittedEvent(
+                                          login: loginController.text.trim(),
+                                          password: passwordController.text.trim(),
+                                          context: context,
+                                        ),
+                                      );
+                                },
+                                child: const Text('Kirish'),
+                              ),
+                            ],
+                          ),
                         ),
                       ),
                     ),

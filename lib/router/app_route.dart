@@ -7,7 +7,7 @@ import '../features/auth/presentation/screen/auth_screen.dart';
 import '../features/dashboard/screens/dashboard_screen.dart';
 import '../features/invitations/data/model/template_info_model.dart';
 import '../features/invitations/screens/edit_invitation_screen.dart';
-import '../features/invitations/screens/invitetation_screen.dart';
+import '../features/invitations/screens/invitation_screen.dart';
 import '../features/invitations/screens/view_invitation_screen.dart';
 import '../features/invitations/templates/invitation_template.dart';
 import '../features/main/bloc/main_bloc.dart';
