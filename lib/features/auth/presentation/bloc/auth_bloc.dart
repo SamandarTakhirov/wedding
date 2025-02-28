@@ -33,32 +33,29 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     result.fold(
       (left) {
         info('Login error: ${left.message}');
+        String? loginError;
+        String? passwordError;
         if (left.message.contains('password is wrong')) {
-          emit(state.copyWith(
-            status: Status.error,
-            passwordErrorText: 'Parolda xatolik',
-          ));
+          passwordError = 'Parolda xatolik';
         } else if (left.message.contains('Неверное имя пользователя')) {
-          emit(state.copyWith(
-            status: Status.error,
-            loginErrorText: 'Loginda xatolik',
-          ));
+          loginError = 'Loginda xatolik';
         } else {
-          emit(state.copyWith(
-            status: Status.error,
-            passwordErrorText: 'Parolda xatolik',
-          ));
+          passwordError = 'Parolda xatolik';
         }
+        emit(state.copyWith(
+          status: Status.error,
+          loginErrorText: loginError,
+          passwordErrorText: passwordError,
+        ));
       },
       (right) {
         final responseMap = right as Map<String, Object?>;
         final data = responseMap['data'];
         if (data != null && data is Map<String, Object?> && data['userFound'] == true) {
-          final userId = data['userId'] as String;
-          add(GetUserInfoEvent(
-            context: event.context,
-            userId: userId,
-          ));
+          final userId = data['userId'] as String? ?? '';
+          if (userId.isNotEmpty) {
+            add(GetUserInfoEvent(context: event.context, userId: userId));
+          }
         } else {
           emit(state.copyWith(
             status: Status.error,
@@ -79,5 +76,12 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
   Future<void> _onGetUserInfoEvent(
     GetUserInfoEvent event,
     Emitter<AuthState> emit,
-  ) async {}
+  ) async {
+    emit(state.copyWith(status: Status.loading));
+    // final result = await authRepository.getUserInfo(event.userId);
+    // result.fold(
+    //   (left) => emit(state.copyWith(status: Status.error)),
+    //   (right) => emit(state.copyWith(status: Status.success)),
+    // );
+  }
 }

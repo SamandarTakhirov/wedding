@@ -1,9 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:go_router/go_router.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 import '../../../constants/app_colors.dart';
+import '../../../core/extension/extension.dart';
 import '../../../core/utils/context_utils.dart';
+import '../../../core/utils/utils.dart';
 import '../../../gen/assets.gen.dart';
+import '../widgets/support_widget.dart';
 
 class MainScreen extends StatefulWidget {
   const MainScreen({
@@ -17,6 +22,16 @@ class MainScreen extends StatefulWidget {
 }
 
 class _MainScreenState extends State<MainScreen> with TickerProviderStateMixin {
+  Future<void> _openSupport() async {
+    final url = Uri.parse('https://t.me/taklifnomavipuz');
+
+    if (await canLaunchUrl(url)) {
+      await launchUrl(url, mode: LaunchMode.externalApplication);
+    } else {
+      throw 'Could not launch $url';
+    }
+  }
+
   @override
   Widget build(BuildContext context) => PopScope(
         canPop: widget.navigationShell.currentIndex != 0,
@@ -26,6 +41,8 @@ class _MainScreenState extends State<MainScreen> with TickerProviderStateMixin {
           body: LayoutBuilder(
             builder: (context, constraints) {
               final isCompact = constraints.maxWidth < 600;
+              final fontSize = constraints.maxWidth;
+
               return Stack(
                 children: [
                   SizedBox.expand(child: widget.navigationShell),
@@ -50,39 +67,54 @@ class _MainScreenState extends State<MainScreen> with TickerProviderStateMixin {
                         ],
                       ),
                       padding: const EdgeInsets.all(16),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            isCompact ? 'VIP' : 'TaklifnomaVIP',
-                            style: context.textTheme.titleLarge?.copyWith(
-                              color: AppColors.black,
-                              fontWeight: FontWeight.w700,
+                      child: SingleChildScrollView(
+                        child: ConstrainedBox(
+                          constraints: BoxConstraints(
+                            minHeight: constraints.maxHeight - 32,
+                          ),
+                          child: IntrinsicHeight(
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  isCompact ? 'VIP' : 'TaklifnomaVIP',
+                                  style: context.textTheme.titleLarge?.copyWith(
+                                    color: AppColors.black,
+                                    fontWeight: FontWeight.w700,
+                                  ),
+                                ),
+                                const SizedBox(height: 20),
+                                _buildMenuButton(
+                                  index: 0,
+                                  icon: Assets.svg.dashboard,
+                                  title: 'Dashboard',
+                                  context: context,
+                                  isCompact: isCompact,
+                                ),
+                                _buildMenuButton(
+                                  index: 1,
+                                  icon: Assets.svg.invitation,
+                                  title: 'Invitation',
+                                  context: context,
+                                  isCompact: isCompact,
+                                ),
+                                _buildMenuButton(
+                                  index: 2,
+                                  icon: Assets.svg.sales,
+                                  title: 'Sales',
+                                  context: context,
+                                  isCompact: isCompact,
+                                ),
+                                const Spacer(),
+                                SupportWidget(
+                                  isCompact: isCompact,
+                                  onPressed: _openSupport,
+                                  fontSize: fontSize,
+                                ),
+                              ],
                             ),
                           ),
-                          const SizedBox(height: 20),
-                          _buildMenuButton(
-                            index: 0,
-                            icon: Assets.svg.dashboard,
-                            title: 'Dashboard',
-                            context: context,
-                            isCompact: isCompact,
-                          ),
-                          _buildMenuButton(
-                            index: 1,
-                            icon: Assets.svg.invitation,
-                            title: 'Invitation',
-                            context: context,
-                            isCompact: isCompact,
-                          ),
-                          _buildMenuButton(
-                            index: 2,
-                            icon: Assets.svg.sales,
-                            title: 'Sales',
-                            context: context,
-                            isCompact: isCompact,
-                          ),
-                        ],
+                        ),
                       ),
                     ),
                   ),

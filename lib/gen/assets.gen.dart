@@ -148,6 +148,9 @@ class $AssetsSvgGen {
   /// File path: assets/svg/sales.svg
   SvgGenImage get sales => const SvgGenImage('assets/svg/sales.svg');
 
+  /// File path: assets/svg/support.svg
+  SvgGenImage get support => const SvgGenImage('assets/svg/support.svg');
+
   /// File path: assets/svg/telegram.svg
   SvgGenImage get telegram => const SvgGenImage('assets/svg/telegram.svg');
 
@@ -155,7 +158,7 @@ class $AssetsSvgGen {
   SvgGenImage get user => const SvgGenImage('assets/svg/user.svg');
 
   /// List of all assets
-  List<SvgGenImage> get values => [dashboard, instagram, invitation, monitor, profile, sales, telegram, user];
+  List<SvgGenImage> get values => [dashboard, instagram, invitation, monitor, profile, sales, support, telegram, user];
 }
 
 class Assets {
