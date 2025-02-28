@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:go_router/go_router.dart';
@@ -8,6 +9,7 @@ import '../../../core/extension/extension.dart';
 import '../../../core/utils/context_utils.dart';
 import '../../../core/utils/utils.dart';
 import '../../../gen/assets.gen.dart';
+import '../widgets/profile_widget.dart';
 import '../widgets/support_widget.dart';
 
 class MainScreen extends StatefulWidget {
@@ -111,6 +113,8 @@ class _MainScreenState extends State<MainScreen> with TickerProviderStateMixin {
                                   onPressed: _openSupport,
                                   fontSize: fontSize,
                                 ),
+                                AppUtils.kGap16,
+                                ProfileWidget(isCompact: isCompact),
                               ],
                             ),
                           ),
