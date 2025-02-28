@@ -1,3 +1,4 @@
+import 'package:another_flushbar/flushbar.dart';
 import 'package:flutter/material.dart';
 
 import '../../../constants/app_colors.dart';
@@ -6,7 +7,6 @@ import '../../../core/utils/utils.dart';
 class EditablePriceCell extends StatefulWidget {
   const EditablePriceCell({
     super.key,
-    // Yangi parametrlar
     required this.isEditing,
     required this.onStartEditing,
     required this.onStopEditing,
@@ -32,10 +32,42 @@ class EditablePriceCell extends StatefulWidget {
 class EditablePriceCellState extends State<EditablePriceCell> {
   late TextEditingController _controller;
 
+  final ValueNotifier<bool> _isFlushbarVisibleNotifier = ValueNotifier(false);
+
+  void _showFlushbar({required String changeValue}) {
+    if (_isFlushbarVisibleNotifier.value) return;
+
+    _isFlushbarVisibleNotifier.value = true;
+    Flushbar<Text>(
+      maxWidth: 500,
+      message: 'Sotuv narxi $changeValue so\'mga o\'zgartirildi',
+      duration: const Duration(seconds: 3),
+      margin: const EdgeInsets.all(8),
+      borderRadius: BorderRadius.circular(8),
+      backgroundGradient: const LinearGradient(
+        colors: [
+          AppColors.blueTemplateColor,
+          AppColors.whiteBlue,
+        ],
+      ),
+      icon: const Icon(
+        Icons.edit,
+        color: AppColors.white,
+      ),
+      onStatusChanged: (status) {
+        if (status == FlushbarStatus.DISMISSED) {
+          _isFlushbarVisibleNotifier.value = false;
+        }
+      },
+    ).show(context);
+  }
+
   @override
   void initState() {
     super.initState();
-    _controller = TextEditingController(text: widget.priceNotifier.value.toStringAsFixed(0));
+    _controller = TextEditingController(
+      text: widget.priceNotifier.value.toStringAsFixed(0),
+    );
   }
 
   @override
@@ -49,12 +81,14 @@ class EditablePriceCellState extends State<EditablePriceCell> {
   @override
   void dispose() {
     _controller.dispose();
+    _isFlushbarVisibleNotifier.dispose();
     super.dispose();
   }
 
   void _onSubmitted(String value) {
     final newPrice = double.tryParse(value.replaceAll(' ', ''));
-    if (newPrice != null && newPrice >= widget.minPrice) {
+    if (newPrice != null && newPrice >= widget.minPrice && newPrice != widget.priceNotifier.value) {
+      _showFlushbar(changeValue: newPrice.formattedPrice);
       widget.onPriceChanged(newPrice);
       widget.onStopEditing();
     } else {
@@ -70,31 +104,35 @@ class EditablePriceCellState extends State<EditablePriceCell> {
         width: 100,
         child: Padding(
           padding: AppUtils.kPaddingVer6,
-          child: TextField(
-            autofocus: true,
-            controller: _controller,
-            style: widget.editingTextStyle,
-            keyboardType: TextInputType.number,
-            textInputAction: TextInputAction.done,
-            decoration: const InputDecoration(
-              contentPadding: AppUtils.kPadding0,
-              focusedBorder: OutlineInputBorder(
-                borderSide: BorderSide(
-                  color: AppColors.grey,
+          child: ValueListenableBuilder(
+            valueListenable: _isFlushbarVisibleNotifier,
+            builder: (context, isFlushbarVisible, child) => TextField(
+              autofocus: true,
+              enabled: !isFlushbarVisible,
+              controller: _controller,
+              style: widget.editingTextStyle,
+              keyboardType: TextInputType.number,
+              textInputAction: TextInputAction.done,
+              decoration: const InputDecoration(
+                contentPadding: AppUtils.kPadding0,
+                focusedBorder: OutlineInputBorder(
+                  borderSide: BorderSide(
+                    color: AppColors.grey,
+                  ),
+                ),
+                border: OutlineInputBorder(
+                  borderSide: BorderSide(
+                    color: AppColors.grey,
+                  ),
+                ),
+                enabledBorder: OutlineInputBorder(
+                  borderSide: BorderSide(
+                    color: AppColors.grey,
+                  ),
                 ),
               ),
-              border: OutlineInputBorder(
-                borderSide: BorderSide(
-                  color: AppColors.grey,
-                ),
-              ),
-              enabledBorder: OutlineInputBorder(
-                borderSide: BorderSide(
-                  color: AppColors.grey,
-                ),
-              ),
+              onSubmitted: _onSubmitted,
             ),
-            onSubmitted: _onSubmitted,
           ),
         ),
       );

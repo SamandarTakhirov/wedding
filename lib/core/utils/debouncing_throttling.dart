@@ -18,6 +18,4 @@ class DeBouncing {
   }
 }
 
-/// TODO(Miracle): Write this for searching API's
 
-class Throttling {}

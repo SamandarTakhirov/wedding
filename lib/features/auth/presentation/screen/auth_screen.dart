@@ -97,7 +97,7 @@ class _AuthScreenState extends State<AuthScreen> {
                                 ),
                                 onPressed: () {
                                   //TODO: remove this line
-                                  context.pushReplacementNamed(Routes.dashboard);
+                                  // context.pushReplacementNamed(Routes.dashboard);
                                   context.read<AuthBloc>().add(
                                         LoginSubmittedEvent(
                                           login: loginController.text.trim(),

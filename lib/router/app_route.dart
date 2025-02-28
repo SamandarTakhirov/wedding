@@ -21,22 +21,20 @@ final GlobalKey<NavigatorState> rootNavigatorKey = GlobalKey<NavigatorState>();
 final GoRouter router = GoRouter(
   navigatorKey: rootNavigatorKey,
   initialLocation: Routes.initial,
+  redirect: (context, state) async {
+    final loggedIn = (await LocalSource.instance).isUserAuthenticated;
+    final isAtLogin = state.path == Routes.initial;
 
-  //TODO: Uncomment this code to enable redirection
-  // redirect: (context, state) async {
-  //   final loggedIn = (await LocalSource.instance).isUserAuthenticated;
-  //   final isAtLogin = state.path == Routes.initial;
+    if (!loggedIn && !isAtLogin) {
+      return Routes.initial;
+    }
 
-  //   if (!loggedIn && !isAtLogin) {
-  //     return Routes.initial;
-  //   }
+    if (loggedIn && isAtLogin) {
+      return Routes.dashboard;
+    }
 
-  //   if (loggedIn && isAtLogin) {
-  //     return Routes.dashboard;
-  //   }
-
-  //   return null;
-  // },
+    return null;
+  },
   routes: [
     GoRoute(
       path: Routes.initial,

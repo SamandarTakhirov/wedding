@@ -32,6 +32,7 @@ class _SupportWidgetState extends State<SupportWidget> {
 
     _isFlushbarVisible = true;
     Flushbar<Text>(
+      maxWidth: 500,
       message: 'Karta raqami nusxalandi',
       duration: const Duration(seconds: 2),
       margin: const EdgeInsets.all(8),
